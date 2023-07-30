@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
 
 # database returns example list
 contents = [
@@ -17,6 +18,7 @@ contents = [
     }
 ]
 
+@login_required
 def home(request):
     # return HttpResponse('<h1>Welcome to the Dashboard!</h1>')
     context = {

@@ -1,4 +1,10 @@
-{% extends "reminder/base.html" %}
-{% block content %}
-
-{% endblock content %}
+{% extends "reminder/base.html" %} {% block content %} {% for reminder in reminders %}
+<h2>{{ reminder.title }}</h2>
+<i> {{ reminder.date_added|date:"F d, Y" }} </i>
+<br />
+<i> {{ reminder.due_date|date:"F d, Y" }} </i>
+<p>{{ reminder.description }}</p>
+<i> {{ reminder.notification_mode }} </i>
+<br />
+<p>{{ reminder.user }}</p>
+{% endfor %} {% endblock content %}
