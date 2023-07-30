@@ -1,6 +1,7 @@
 {% extends "dashboard/base.html" %}
 {% block content %}
 {% for content in contents %}
+<h1>Welcome, {{ user.username }}</h1>
 <article class="media content-section">
     <div class="media-body">
         <div class="article-metadata">
