@@ -3,3 +3,5 @@
 *.cfg
 
 guide.txt
+
+.env

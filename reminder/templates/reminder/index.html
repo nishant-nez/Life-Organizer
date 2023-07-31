@@ -1,4 +1,4 @@
-{% extends "reminder/base.html" %} {% block content %} {% for reminder in reminders %}
+{% extends "dashboard/base.html" %} {% block content %} {% for reminder in reminders %}
 <h2>{{ reminder.title }}</h2>
 <i> {{ reminder.date_added|date:"F d, Y" }} </i>
 <br />

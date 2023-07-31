@@ -1,134 +1,66 @@
-<!-- for css -->
+{% load static tailwind_tags %}
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
-
-    {% if title %}
-    <title>Dashboard - {{ title }}</title>
-    {% else %}
-    <title>Dashboard</title>
-    {% endif %}
-
-    <link rel="stylesheet" href="{% static 'dashboard/style.css' %}">
-    <!-- Boxicons CDN Link -->
-    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard | Life Organizer</title>
+    {% tailwind_css %}
 </head>
 
 <body>
-    <div class="sidebar">
-        <div class="logo-details">
-            <i class='bx bxl-c-plus-plus icon'></i>
-            <div class="logo_name">Life Organizer</div>
-            <i class='bx bx-menu' id="btn"></i>
-        </div>
-        <ul class="nav-list">
-            <li>
-                <i class='bx bx-search'></i>
-                <input type="text" placeholder="Search...">
-                <span class="tooltip">Search</span>
-            </li>
-            <li>
-                <a href="#">
-                    <i class='bx bx-grid-alt'></i>
-                    <span class="links_name">Dashboard</span>
-                </a>
-                <span class="tooltip">Dashboard</span>
-            </li>
-            <li>
-                <a href="#">
-                    <i class='bx bx-bell'></i>
-                    <span class="links_name">Reminder</span>
-                </a>
-                <span class="tooltip">Reminder</span>
-            </li>
-            <!-- <li>
-                <a href="#">
-                    <i class='bx bx-chat'></i>
-                    <span class="links_name">Messages</span>
-                </a>
-                <span class="tooltip">Messages</span>
-            </li> -->
-            <li>
-                <a href="#">
-                    <i class='bx bx-note'></i>
-                    <span class="links_name">Note</span>
-                </a>
-                <span class="tooltip">Note</span>
-            </li>
-            <li>
-                <a href="#">
-                    <i class='bx bx-calendar'></i>
-                    <span class="links_name">Calendar</span>
-                </a>
-                <span class="tooltip">Calendar</span>
-            </li>
-            <li>
-                <a href="#">
-                    <i class='bx bx-target-lock'></i>
-                    <span class="links_name">Goal</span>
-                </a>
-                <span class="tooltip">Goal</span>
-            </li>
-            <li>
-                <a href="#">
-                    <i class='bx bx-pie-chart-alt-2'></i>
-                    <span class="links_name">Analytics</span>
-                </a>
-                <span class="tooltip">Analytics</span>
-            </li>
-            <a href="{% url 'logout' %}">
-                <li class="profile">
-                    <div class="profile-details">
-                        <div class="name_job">
-                            <div class="name">Logout</div>
-                            <!-- <div class="job"></div> -->
-                        </div>
+    <div class="fixed left-0 top-0 h-full w-60 md:w-96 max-w-80 bg-gray-900">
+        <!-- vertical navbar -->
+        <nav class="text-white">
+            <a href="{% url 'dashboard-home' %}">
+                <div class="flex justify-evenly items-center pt-7 mb-16">
+                    <div>
+                        <img src="{% static 'dashboard/logo.png' %}" alt="Life Organizer" class="custom-rounded-l">
                     </div>
-                    <i class='bx bx-log-out' id="log_out"></i>
-                </li>
+                    <div class="text-2xl uppercase font-bold">
+                        Life Organizer
+                    </div>
+                </div>
             </a>
-        </ul>
+            <div class="grid grid-cols-1 text-2xl">
+                {% if request.path == '/' %}
+                <a href="{% url 'dashboard-home' %}" class="block py-8 px-20 bg-gray-600">
+                    {% else %}
+                    <a href="{% url 'dashboard-home' %}" class="block py-8 px-20 hover:bg-gray-600">
+                        {% endif %}
+                        <span class="">DO</span> <span class="">Dashboard</span>
+                    </a>
+
+                    {% if '/reminder/' in request.path %}
+                    <a href="{% url 'reminder-home' %}" class="block py-8 px-20 bg-gray-600">
+                        {% else %}
+                        <a href="{% url 'reminder-home' %}" class="block py-8 px-20 hover:bg-gray-600">
+                            {% endif %}
+                            <span>RO</span> <span>Reminder</span>
+                        </a>
+                        <a href="#" class="block py-8 px-20 hover:bg-gray-600">
+                            <span>NO</span> <span>Note</span>
+                        </a>
+                        <a href="#" class="block py-8 px-20 hover:bg-gray-600">
+                            <span>CO</span> <span>Calendar</span>
+                        </a>
+                        <a href="#" class="block py-8 px-20 hover:bg-gray-600">
+                            <span>GO</span> <span>Goal</span>
+                        </a>
+            </div>
+            <a href="{% url 'logout' %}">
+                <div class="absolute bottom-0 left-0 w-full py-8 px-16 text-2xl flex justify-between bg-gray-950">
+                    <span>LO</span>
+                    <span>Logout</span>
+                </div>
+            </a>
+        </nav>
     </div>
-    <section class="home-section">
-        <div class="text">Dashboard</div>
-        <div>
-
-            {% block content %}{% endblock %}
-
-        </div>
-
-    </section>
-
-
-    <script>
-        let sidebar = document.querySelector(".sidebar");
-        let closeBtn = document.querySelector("#btn");
-        let searchBtn = document.querySelector(".bx-search");
-
-        closeBtn.addEventListener("click", () => {
-            sidebar.classList.toggle("open");
-            menuBtnChange();//calling the function(optional)
-        });
-
-        searchBtn.addEventListener("click", () => { // Sidebar open when you click on the search iocn
-            sidebar.classList.toggle("open");
-            menuBtnChange(); //calling the function(optional)
-        });
-
-        // following are the code to change sidebar button(optional)
-        function menuBtnChange() {
-            if (sidebar.classList.contains("open")) {
-                closeBtn.classList.replace("bx-menu", "bx-menu-alt-right");//replacing the iocns class
-            } else {
-                closeBtn.classList.replace("bx-menu-alt-right", "bx-menu");//replacing the iocns class
-            }
-        }
-    </script>
+    <!-- main content -->
+    <div></div>
 </body>
 
 </html>
