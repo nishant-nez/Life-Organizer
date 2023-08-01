@@ -5,6 +5,11 @@
 @tailwind utilities;
 
 .custom-rounded-l {
-  border-radius: 300px;
-  width: 88px;
+  border-radius: 100px;
+  width: 55px;
+}
+
+.custom-rounded-s {
+  border-radius: 50%;
+  width: 10%;
 }

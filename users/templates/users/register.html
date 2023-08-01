@@ -2,24 +2,27 @@
 {% load crispy_forms_tags %}
 {% block title %}Register{% endblock %}
 {% block content %}
-<div class="container d-flex justify-content-center align-items-center mt-5 mb-5">
+<div class="container mx-auto flex justify-center items-center mt-5 mb-5">
     <div class="content-section p-4 border" style="max-width: 600px; width: 100%;">
         <form method="POST">
             {% csrf_token %}
             <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Join Today</legend>
+                <legend class="border-b mb-4">Join Today</legend>
                 {{ form|crispy }}
             </fieldset>
             <div class="form-group mt-4">
-                <button class="btn btn-outline-info btn-block" type="submit">Sign Up</button>
+                <button
+                    class="border border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white font-bold py-2 px-4 w-full rounded"
+                    type="submit">Sign Up</button>
             </div>
         </form>
-        <div class="border-top pt-3">
-            <small class="text-muted">
-                Already Have an Account? <a class="ml-2" href="{% url 'login' %}">Sign In</a>
+        <div class="border-t pt-3">
+            <small class="text-gray-500">
+                Already Have an Account? <a class="ml-2 text-blue-500" href="{% url 'login' %}">Sign In</a>
             </small>
         </div>
     </div>
 </div>
+
 
 {% endblock content %}

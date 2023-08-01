@@ -1,6 +1,49 @@
 {% extends "dashboard/base.html" %}
+{% block title %}Profile {% endblock %}
+{% load tailwind_filters %}
 {% load crispy_forms_tags %}
-{% block content %}
-<h1>{{ user.username }}</h1>
-<img class="rounded-circle account-img" alt="user-profile" src="{{ user.profile.image.url }}">
-{% endblock content %}
+{% block profile %}
+
+<div class="flex items-center justify-center w-full mt-12">
+    <div class="border p-10 pb-0 mb-10">
+        <div class="flex items-center mb-6">
+            <div class="w-24 h-24 rounded-full overflow-hidden">
+                <img class="w-full h-full object-cover" alt="user-profile" src="{{ user.profile.image.url }}">
+            </div>
+            <div class="flex flex-col ml-6">
+                <h1 class="font-bold text-xl mb-0">{{ user.username }}</h1>
+                {% if user.email == '' %}
+                <p>No email provided.</p>
+                {% else %}
+                <p>{{ user.email }}</p>
+                {% endif %}
+            </div>
+        </div>
+        <hr>
+        <form method="POST" enctype="multipart/form-data" class="m-10 pr-16 space-y-4 w-full">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="mb-4 font-bold text-xl">Profile Info</legend>
+                {{ u_form|crispy }}
+                {{ p_form|crispy }}
+
+            </fieldset>
+            <div class="form-group mt-2">
+                <button class="border px-8 py-4 mt-2 rounded-xl text-white font-bold bg-blue-500 hover:bg-blue-900"
+                    type="submit">Update</button>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+{% if messages %}
+{% for message in messages %}
+<div id="popup"
+    class="fixed bottom-4 right-4 bg-white border-t-4 border-blue-500 p-4 rounded-md shadow-md opacity-0 invisible transition-opacity duration-300">
+    {{ message }}
+</div>
+{% endfor %}
+{% endif %}
+
+{% endblock profile %}

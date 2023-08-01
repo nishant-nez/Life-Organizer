@@ -1,4 +1,7 @@
-{% extends "dashboard/base.html" %} {% block content %} {% for reminder in reminders %}
+{% extends "dashboard/base.html" %}
+{% block title %}Reminder {% endblock %}
+{% block reminder %}
+{% for reminder in reminders %}
 <h2>{{ reminder.title }}</h2>
 <i> {{ reminder.date_added|date:"F d, Y" }} </i>
 <br />
@@ -7,4 +10,8 @@
 <i> {{ reminder.notification_mode }} </i>
 <br />
 <p>{{ reminder.user }}</p>
-{% endfor %} {% endblock content %}
+<br><br><br>
+{% endfor %} {% endblock reminder %}
+{% block buttonname %}
+Reminder
+{% endblock %}

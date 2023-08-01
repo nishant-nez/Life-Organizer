@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'reminder',
     'bootstrap5',
     'crispy_forms',
-    'crispy_bootstrap5',
+    'crispy_tailwind',
+    # 'crispy_bootstrap5',
     'tailwind',
     'theme',
     'django_browser_reload',
@@ -148,9 +149,8 @@ MEDIA_URL = '/media/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
-
-CRISPY_TEMPLATE_PACK = 'bootstrap5'
+CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
+CRISPY_TEMPLATE_PACK = 'tailwind'
 
 
 LOGIN_REDIRECT_URL = 'dashboard-home'

@@ -1,8 +1,9 @@
 {% extends "dashboard/base.html" %}
-{% block content %}
-{% for content in contents %}
+{% block title %}Dashboard {% endblock %}
+{% block dashboard %}
 <h1>Welcome, {{ user.username }}</h1>
-<article class="media content-section">
+{% for content in contents %}
+<!-- <article class="media content-section">
     <div class="media-body">
         <div class="article-metadata">
             <a class="mr-2" href="#">{{ content.author }}</a>
@@ -11,6 +12,6 @@
         <h2><a class="article-title" href="#">{{ content.title }}</a></h2>
         <p class="article-content">{{ content.content }}</p>
     </div>
-</article>
+</article> -->
 {% endfor %}
-{% endblock content %}
+{% endblock dashboard %}

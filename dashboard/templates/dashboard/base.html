@@ -1,4 +1,5 @@
 {% load static tailwind_tags %}
+{% load tailwind_filters %}
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -7,60 +8,164 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Dashboard | Life Organizer</title>
+    <title>{% block title %}{% endblock %} | Life Organizer</title>
     {% tailwind_css %}
 </head>
 
 <body>
-    <div class="fixed left-0 top-0 h-full w-60 md:w-96 max-w-80 bg-gray-900">
+    <div class="fixed left-0 top-0 h-full w-60 md:w-80 max-w-80 bg-gray-900">
         <!-- vertical navbar -->
         <nav class="text-white">
             <a href="{% url 'dashboard-home' %}">
-                <div class="flex justify-evenly items-center pt-7 mb-16">
+                <div class="flex justify-evenly items-center pt-4 mb-10">
                     <div>
                         <img src="{% static 'dashboard/logo.png' %}" alt="Life Organizer" class="custom-rounded-l">
                     </div>
-                    <div class="text-2xl uppercase font-bold">
+                    <div class="text-xl uppercase font-bold">
                         Life Organizer
                     </div>
                 </div>
             </a>
-            <div class="grid grid-cols-1 text-2xl">
+            <div class="grid grid-cols-1 text-xl">
                 {% if request.path == '/' %}
-                <a href="{% url 'dashboard-home' %}" class="block py-8 px-20 bg-gray-600">
+                <a href="{% url 'dashboard-home' %}" class="block py-7 px-20 bg-gray-600">
                     {% else %}
-                    <a href="{% url 'dashboard-home' %}" class="block py-8 px-20 hover:bg-gray-600">
+                    <a href="{% url 'dashboard-home' %}" class="block py-7 px-20 hover:bg-gray-600">
                         {% endif %}
-                        <span class="">DO</span> <span class="">Dashboard</span>
+                        <svg class="w-8 inline-block" fill="none" stroke="currentColor" stroke-width="1.5"
+                            viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25">
+                            </path>
+                        </svg>
+                        <span class="pl-5 pt-6">Dashboard</span>
                     </a>
 
                     {% if '/reminder/' in request.path %}
-                    <a href="{% url 'reminder-home' %}" class="block py-8 px-20 bg-gray-600">
+                    <a href="{% url 'reminder-home' %}" class="block py-7 px-20 bg-gray-600">
                         {% else %}
-                        <a href="{% url 'reminder-home' %}" class="block py-8 px-20 hover:bg-gray-600">
+                        <a href="{% url 'reminder-home' %}" class="block py-7 px-20 hover:bg-gray-600">
                             {% endif %}
-                            <span>RO</span> <span>Reminder</span>
+                            <svg class="w-8 inline-block" fill="none" stroke="currentColor" stroke-width="1.5"
+                                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0M3.124 7.5A8.969 8.969 0 015.292 3m13.416 0a8.969 8.969 0 012.168 4.5">
+                                </path>
+                            </svg>
+                            <span class="pl-5 pt-6">Reminder</span>
                         </a>
-                        <a href="#" class="block py-8 px-20 hover:bg-gray-600">
-                            <span>NO</span> <span>Note</span>
+                        <a href="#" class="block py-7 px-20 hover:bg-gray-600">
+                            <svg class="w-8 inline-block" fill="none" stroke="currentColor" stroke-width="1.5"
+                                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z">
+                                </path>
+                            </svg>
+                            <span class="pl-5 pt-6">Note</span>
                         </a>
-                        <a href="#" class="block py-8 px-20 hover:bg-gray-600">
-                            <span>CO</span> <span>Calendar</span>
+                        <a href="#" class="block py-7 px-20 hover:bg-gray-600">
+                            <svg class="w-8 inline-block" fill="none" stroke="currentColor" stroke-width="1.5"
+                                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5">
+                                </path>
+                            </svg>
+                            <span class="pl-5 pt-6">Calendar</span>
                         </a>
-                        <a href="#" class="block py-8 px-20 hover:bg-gray-600">
-                            <span>GO</span> <span>Goal</span>
+                        <a href="#" class="block py-7 px-20 hover:bg-gray-600">
+
+                            <img src="{% static 'dashboard/goal.png' %}" alt="goal" class="inline-block w-8">
+                            <span class="pl-5 pt-6">Goal</span>
+                        </a>
+                        <a href="#" class="block py-7 px-20 hover:bg-gray-600">
+                            <svg class="w-8 inline-block" fill="none" stroke="currentColor" stroke-width="1.5"
+                                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M10.5 6a7.5 7.5 0 107.5 7.5h-7.5V6z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M13.5 10.5H21A7.5 7.5 0 0013.5 3v7.5z"></path>
+                            </svg>
+                            <span class="pl-5 pt-6">Analytics</span>
                         </a>
             </div>
             <a href="{% url 'logout' %}">
                 <div class="absolute bottom-0 left-0 w-full py-8 px-16 text-2xl flex justify-between bg-gray-950">
-                    <span>LO</span>
+                    <img src="{% static 'dashboard/exit.png' %}" alt="logout" class="inline-block w-8">
                     <span>Logout</span>
                 </div>
             </a>
         </nav>
     </div>
+
     <!-- main content -->
-    <div></div>
+    <div class="ml-80">
+        <!-- top nav -->
+
+        <div class="flex justify-end items-center p-4 border">
+            <div class="w-10 h-10 rounded-full overflow-hidden">
+                <a href="{% url 'profile' %}"><img src="{{ user.profile.image.url }}"
+                        alt="{{ request.user.username }}'s picture" class="w-full h-full object-cover"></a>
+            </div>
+            <a href="{% url 'profile' %}">
+                <div class="font-bold px-5">{{ request.user.username }}</div>
+            </a>
+        </div>
+
+        <!-- replacable contents -->
+        <div>
+            <!-- dashboard -->
+            {% block dashboard %}
+            {% endblock %}
+
+            <!-- reminder -->
+            {% block reminder %}
+            {% endblock %}
+
+            <!-- note -->
+            {% block note %}
+            {% endblock %}
+
+            <!-- calendar -->
+            {% block calendar %}
+            {% endblock %}
+
+            <!-- goal -->
+            {% block goal %}
+            {% endblock %}
+
+            <!-- analytics -->
+            {% block analytics %}
+            {% endblock %}
+
+            <!-- profile -->
+            {% block profile %}
+            {% endblock %}
+
+            <!-- {% block content %}{% endblock %} -->
+        </div>
+    </div>
+
+    <!-- add form -->
+    <div>
+        <div id="popup-container" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+            <div id="popup-content" class="bg-white rounded p-4">
+                <h2 class="text-xl font-bold mb-4">This is a Popup!</h2>
+                <p class="mb-4">{% block addform %}{% endblock %}</p>
+                <button id="close-popup" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    Close
+                </button>
+            </div>
+        </div>
+
+        <button id="open-popup"
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded fixed bottom-4 right-4 hidden">
+            Add {% block buttonname %}{% endblock %}
+        </button>
+
+    </div>
+
+
+    <script src="{% static 'dashboard/index.js' %}"></script>
 </body>
 
 </html>
