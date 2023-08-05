@@ -4,18 +4,7 @@ from django.contrib.auth.decorators import login_required
 
 # database returns example list
 contents = [
-    {
-        'author': 'nknk',
-        'title':'my first post',
-        'content': "This is my very first blogpost!",
-        'date_posted': 'July 28, 2023'
-    },
-    {
-        'author': 'khkh',
-        'title':'my second post',
-        'content': "This is my second blogpost!",
-        'date_posted': 'July 27, 2023'
-    }
+
 ]
 
 @login_required

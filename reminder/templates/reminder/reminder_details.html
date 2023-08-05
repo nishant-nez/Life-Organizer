@@ -1,0 +1,46 @@
+{% extends "dashboard/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Reminder {% endblock %}
+
+
+{% block reminder %}
+
+<h2>{{ object.title }}</h2>
+<i> {{ object.date_added|date:"F d, Y" }} </i>
+<br />
+<i> {{ object.due_date|date:"F d, Y" }} </i>
+<p>{{ object.description }}</p>
+<i> {{ object.notification_mode }} </i>
+<br />
+<p>{{ object.user }}</p>
+<br><br><br>
+
+{% endblock reminder %}
+
+<!-- {% block addtitle %}
+Reminder
+{% endblock %}
+
+{% block addform %}
+
+<div>
+    <form method="POST">
+        {% csrf_token %}
+        <fieldset class="form-group">
+            <legend class="border-b mb-4">Add Reminder</legend>
+            {{ r_form|crispy }}
+        </fieldset>
+        <div class="form-group mt-4">
+            <button
+                class="border border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white font-bold py-2 px-4 w-full rounded"
+                type="submit">Add</button>
+        </div>
+    </form>
+</div>
+
+{% endblock addform %}
+
+{% block buttonname %}
+Reminder
+{% endblock buttonname %} -->

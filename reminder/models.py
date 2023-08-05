@@ -1,14 +1,15 @@
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
+from django.urls import reverse
 
 # Create your models here.
 class Reminder(models.Model):
     notification_choices = {
+        ('None', 'None'),
         ('email', 'Email'),
         ('sms','SMS'),
         ('both','Both'),
-        (None, 'None'),
     }
 
     title = models.CharField(max_length=50)
@@ -22,3 +23,7 @@ class Reminder(models.Model):
 
     def __str__(self):
         return self.title
+    
+    # returns ful url as string
+    def get_absolute_url(self):
+        return reverse('reminder-detail', kwargs={'pk':self.pk})

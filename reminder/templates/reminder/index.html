@@ -1,17 +1,65 @@
 {% extends "dashboard/base.html" %}
+{% load crispy_forms_tags %}
+
 {% block title %}Reminder {% endblock %}
+
+
 {% block reminder %}
-{% for reminder in reminders %}
-<h2>{{ reminder.title }}</h2>
-<i> {{ reminder.date_added|date:"F d, Y" }} </i>
-<br />
-<i> {{ reminder.due_date|date:"F d, Y" }} </i>
-<p>{{ reminder.description }}</p>
-<i> {{ reminder.notification_mode }} </i>
-<br />
-<p>{{ reminder.user }}</p>
-<br><br><br>
-{% endfor %} {% endblock reminder %}
-{% block buttonname %}
+<div class="container m-auto mt-8 grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-8">
+    {% for reminder in reminders %}
+    <div class="border p-10 leading-6">
+        <h2 class="font-bold text-xl mb-2"> <a href="{% url 'reminder-detail' reminder.id %}">{{ reminder.title }}</a>
+        </h2>
+        <span class="">Added on: </span> <i class="italic font-light"> {{ reminder.date_added|date:"F d, Y h:i A" }}
+        </i><br />
+        <span class="">Due Date: </span> <i class="italic font-light"> {{ reminder.due_date|date:"F d, Y H:i A" }} </i>
+        <p>{{ reminder.description }}</p>
+        <i> notification mode: {{ reminder.notification_mode }} </i>
+        <br />
+        <p>by: {{ reminder.user }}</p> <br>
+        <a class="border py-2 px-4 mx-4 bg-green-600 text-white rounded cursor-pointer"
+            href="/reminder/{{ reminder.id }}/update/">
+            Update
+        </a>
+        <a class="border py-2 px-4 mx-4 bg-red-600 text-white rounded cursor-pointer"
+            href="/reminder/{{ reminder.id }}/delete/">
+            Delete
+        </a>
+    </div>
+    {% endfor %}
+</div>
+<div class="fixed bottom-4 right-4 p-4">
+    <a href="/reminder/new/"
+        class="p-4 rounded border border-blue-400 bg-blue-400 hover:border-blue-500 hover:bg-blue-500 text-white">
+        Add Reminder
+    </a>
+</div>
+
+{% endblock reminder %}
+
+
+<!-- {% block addtitle %}
 Reminder
-{% endblock %}
+{% endblock %} -->
+<!-- 
+{% block addform %}
+
+<div>
+    <form method="POST">
+        {% csrf_token %}
+        <fieldset class="form-group">
+            {{ r_form|crispy }}
+        </fieldset>
+        <div class="form-group mt-4">
+            <button
+                class="border border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white font-bold py-2 px-4 w-full rounded"
+                type="submit">Add</button>
+        </div>
+    </form>
+</div>
+
+{% endblock addform %} -->
+
+<!-- {% block buttonname %}
+Reminder
+{% endblock buttonname %} -->
