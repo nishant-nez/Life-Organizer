@@ -5,8 +5,9 @@
 
 
 {% block reminder %}
-<div class="container m-auto mt-8 grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-8">
+<div class="container m-auto mt-8 grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-8 mb-6">
     {% for reminder in reminders %}
+    {% if not reminder.is_completed %}
     <div class="border p-10 leading-6">
         <h2 class="font-bold text-xl mb-2"> <a href="{% url 'reminder-detail' reminder.id %}">{{ reminder.title }}</a>
         </h2>
@@ -14,6 +15,7 @@
         </i><br />
         <span class="">Due Date: </span> <i class="italic font-light"> {{ reminder.due_date|date:"F d, Y H:i A" }} </i>
         <p>{{ reminder.description }}</p>
+        <!-- <p>complete? {{ reminder.is_complete }}</p> -->
         <i> notification mode: {{ reminder.notification_mode }} </i>
         <br />
         <p>by: {{ reminder.user }}</p> <br>
@@ -26,8 +28,46 @@
             Delete
         </a>
     </div>
+    {% endif %}
     {% endfor %}
 </div>
+
+<div>
+    <hr class="mt-10">
+    <h1 class="font-bold p-6 text-xl">Completed Reminders</h1>
+    <div class="container m-auto mt-2 grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-8 mb-6">
+        {% for reminder in reminders %}
+        {% if reminder.is_completed %}
+        <div class="border p-10 leading-6">
+            <h2 class="font-bold text-xl mb-2">
+                <a href="{% url 'reminder-detail' reminder.id %}">
+                    {{ reminder.title }}
+                </a>
+            </h2>
+            <span class="">Added on: </span> <i class="italic font-light"> {{ reminder.date_added|date:"F d, Y h:i A" }}
+            </i><br />
+            <span class="">Due Date: </span> <i class="italic font-light"> {{ reminder.due_date|date:"F d, Y H:i A" }}
+            </i>
+            <p>{{ reminder.description }}</p>
+            <!-- <p>complete? {{ reminder.is_complete }}</p> -->
+            <i> notification mode: {{ reminder.notification_mode }} </i>
+            <br />
+            <p>by: {{ reminder.user }}</p> <br>
+            <a class="border py-2 px-4 mx-4 bg-green-600 text-white rounded cursor-pointer"
+                href="/reminder/{{ reminder.id }}/update/">
+                Update
+            </a>
+            <a class="border py-2 px-4 mx-4 bg-red-600 text-white rounded cursor-pointer"
+                href="/reminder/{{ reminder.id }}/delete/">
+                Delete
+            </a>
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+
+</div>
+
 <div class="fixed bottom-4 right-4 p-4">
     <a href="/reminder/new/"
         class="p-4 rounded border border-blue-400 bg-blue-400 hover:border-blue-500 hover:bg-blue-500 text-white">
