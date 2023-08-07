@@ -1,14 +1,14 @@
 {% extends "dashboard/base.html" %}
-{% block title %}Delete Reminder {% endblock %}
+{% block title %}Delete Note {% endblock %}
 
-{% block reminder %}
+{% block note %}
 <div class="container mx-auto flex justify-center items-center mt-5 mb-5">
     <div class="content-section p-4 border" style="max-width: 600px; width: 100%;">
         <form method="POST">
             {% csrf_token %}
             <fieldset class="form-group">
-                <legend class="border-b mb-4">Delete Reminder</legend>
-                <h2>Are you sure you want to delete the reminder "<span class="font-bold">{{ object.title }}</span>"?
+                <legend class="border-b mb-4">Delete Note</legend>
+                <h2>Are you sure you want to delete the note "<span class="font-bold">{{ object.title }}</span>"?
                 </h2>
             </fieldset>
             <div class="my-10 p-10 flex justify-">
@@ -18,7 +18,7 @@
                     Yes, Delete
                 </button>
                 <a class="border border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white font-bold py-2 px-4 rounded"
-                    href="{% url 'reminder-detail' object.id %}">
+                    href="{% url 'note-detail' object.id %}">
                     Cancel
                 </a>
             </div>
@@ -27,4 +27,4 @@
 </div>
 
 
-{% endblock reminder %}
+{% endblock note %}

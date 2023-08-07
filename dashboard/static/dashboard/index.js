@@ -15,3 +15,11 @@
 //     // if (window.location.pathname === '/reminder/' && window.location.pathname === '/note/' && window.location.pathname === '/calendar/' && window.location.pathname === '/goal/' && window.location.pathname !== '/reminder/') {
 //     openButton.classList.remove('hidden');
 // }
+
+
+const toastDiv = document.getElementById('toast');
+const toastClose = document.getElementById('toast-close');
+
+toastClose.addEventListener('click', function () {
+    toastDiv.classList.add('hidden');
+})

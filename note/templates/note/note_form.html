@@ -4,9 +4,9 @@
 {% if 'new/' in request.path %} Add
 {% else %} Update
 {% endif %}
-Reminder {% endblock %}
+Note {% endblock %}
 
-{% block reminder %}
+{% block note %}
 <div class="container mx-auto flex justify-center items-center mt-5 mb-5">
     <div class="content-section p-4 border" style="max-width: 600px; width: 100%;">
         <form method="POST">
@@ -15,7 +15,7 @@ Reminder {% endblock %}
                 <legend class="border-b mb-4">
                     {% if 'new/' in request.path %} Add
                     {% else %} Update
-                    {% endif %} Reminder
+                    {% endif %} Note
                 </legend>
                 {{ form|crispy }}
             </fieldset>
@@ -25,7 +25,7 @@ Reminder {% endblock %}
                     type="submit">
                     {% if 'new/' in request.path %} Add
                     {% else %} Update
-                    {% endif %} Reminder
+                    {% endif %} Note
                 </button>
             </div>
         </form>
@@ -33,4 +33,4 @@ Reminder {% endblock %}
 </div>
 
 
-{% endblock reminder %}
+{% endblock note %}

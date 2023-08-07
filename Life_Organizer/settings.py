@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'users',
     'dashboard',
     'reminder',
+    'note',
     'bootstrap5',
     'crispy_forms',
     'crispy_tailwind',

@@ -4,6 +4,8 @@ from django.contrib import messages
 from .forms import UserRegisterForm
 from django.contrib.auth.decorators import login_required
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
+from django.contrib.auth.views import PasswordResetView
+
 
 def register(request):
     if request.method == 'POST':
@@ -38,3 +40,9 @@ def profile(request):
     }
 
     return render(request, 'users/profile.html', context)
+
+
+class CustomPasswordResetView(PasswordResetView):
+    template_name = 'users/password_reset_form.html'
+    email_template_name = 'users/password_reset_email.html'
+

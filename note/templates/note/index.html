@@ -1,0 +1,39 @@
+{% extends "dashboard/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Note {% endblock %}
+
+{% block note %}
+<div class="container m-auto mt-8 grid grid-cols-1 gap-8 mb-6">
+    {% for note in notes %}
+    <div class="border p-10 leading-6">
+        <h2 class="font-bold text-xl mb-2"> <a href="{% url 'note-detail' note.id %}">{{ note.title }}</a>
+        </h2>
+        <span class="">Last updated: <i class="italic font-light"> {{ note.last_updated|date:"F d, Y h:i A" }}
+            </i><br />
+
+            <p class="py-4">
+                {{ note.content|slice:":300" }}{% if note.content|length > 300 %}...{% endif %}
+            </p>
+
+            <p>by: {{ note.user }}</p> <br>
+            <a class="border py-2 px-4 mx-4 bg-green-600 text-white rounded cursor-pointer"
+                href="/note/{{ note.id }}/update/">
+                Update
+            </a>
+            <a class="border py-2 px-4 mx-4 bg-red-600 text-white rounded cursor-pointer"
+                href="/note/{{ note.id }}/delete/">
+                Delete
+            </a>
+    </div>
+    {% endfor %}
+</div>
+
+<div class="fixed bottom-4 right-4 p-4">
+    <a href="/note/new/"
+        class="p-4 rounded border border-blue-400 bg-blue-400 hover:border-blue-500 hover:bg-blue-500 text-white">
+        Add Note
+    </a>
+</div>
+
+{% endblock note %}

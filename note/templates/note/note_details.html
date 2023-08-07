@@ -1,0 +1,22 @@
+{% extends "dashboard/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Note {% endblock %}
+
+
+{% block reminder %}
+<div class="flex items-center justify-center mt-auto text-xl">
+    <div class="border p-10 leading-6 mb-14">
+        <h2 class="font-bold text-3xl mb-2">
+            <a href="{% url 'note-detail' note.id %}">
+                {{ object.title }}
+            </a>
+        </h2>
+        <span class="">Added on: </span> <i class="italic font-light"> {{ object.created_at|date:"F d, Y h:i A" }}
+        </i><br />
+
+        <p class="py-4">{{ object.content }}</p>
+        <p>by: {{ object.user }}</p> <br>
+    </div>
+</div>
+{% endblock reminder %}
