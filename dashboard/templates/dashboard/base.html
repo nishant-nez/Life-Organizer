@@ -2,7 +2,7 @@
 {% load tailwind_filters %}
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 
 <head>
     <meta charset="UTF-8">
@@ -10,6 +10,8 @@
 
     <title>{% block title %}{% endblock %} | Life Organizer</title>
     {% tailwind_css %}
+
+    {% block head %}{% endblock %}
 </head>
 
 <body>
@@ -75,30 +77,42 @@
                                 </a>
 
 
-                                <a href="#" class="flex items-center py-4 px-12 hover:bg-gray-600">
-                                    <svg class="w-8 inline-block" fill="none" stroke="currentColor" stroke-width="1.5"
-                                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5">
-                                        </path>
-                                    </svg>
-                                    <span class="pl-5">Calendar</span>
-                                </a>
-                                <a href="#" class="flex items-center py-4 px-12 hover:bg-gray-600">
+                                {% if '/calendar/' in request.path %}
+                                <a href="{% url 'index' %}" class="flex items-center py-4 px-12 bg-gray-600">
+                                    {% else %}
+                                    <a href="{% url 'index' %}" class="flex items-center py-4 px-12 hover:bg-gray-600">
+                                        {% endif %}
+                                        <svg class="w-8 inline-block" fill="none" stroke="currentColor"
+                                            stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                                            aria-hidden="true">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5">
+                                            </path>
+                                        </svg>
+                                        <span class="pl-5">Calendar</span>
+                                    </a>
 
-                                    <img src="{% static 'dashboard/goal.png' %}" alt="goal" class="inline-block w-8">
-                                    <span class="pl-5">Goal</span>
-                                </a>
-                                <a href="#" class="flex items-center py-4 px-12 hover:bg-gray-600">
-                                    <svg class="w-8 inline-block" fill="none" stroke="currentColor" stroke-width="1.5"
-                                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M10.5 6a7.5 7.5 0 107.5 7.5h-7.5V6z"></path>
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M13.5 10.5H21A7.5 7.5 0 0013.5 3v7.5z"></path>
-                                    </svg>
-                                    <span class="pl-5">Analytics</span>
-                                </a>
+
+
+                                    <a href="#" class="flex items-center py-4 px-12 hover:bg-gray-600">
+
+                                        <img src="{% static 'dashboard/goal.png' %}" alt="goal"
+                                            class="inline-block w-8">
+                                        <span class="pl-5">Goal</span>
+                                    </a>
+
+
+                                    <a href="#" class="flex items-center py-4 px-12 hover:bg-gray-600">
+                                        <svg class="w-8 inline-block" fill="none" stroke="currentColor"
+                                            stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                                            aria-hidden="true">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M10.5 6a7.5 7.5 0 107.5 7.5h-7.5V6z"></path>
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M13.5 10.5H21A7.5 7.5 0 0013.5 3v7.5z"></path>
+                                        </svg>
+                                        <span class="pl-5">Analytics</span>
+                                    </a>
                 </div>
                 <a href="{% url 'logout' %}">
                     <div class="absolute bottom-0 left-0 right-0 py-6 px-10 text-2xl flex justify-between bg-gray-950">

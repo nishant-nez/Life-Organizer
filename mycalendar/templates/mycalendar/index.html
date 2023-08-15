@@ -1,0 +1,203 @@
+{% extends "dashboard/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block head %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.js"></script>
+{% endblock %}
+
+{% block title %}Calendar {% endblock %}
+
+{% block calendar %}
+
+<!-- Google Sync -->
+<div class="flex items-center justify-center m-10">
+    <a href="{% url 'auth-google' %}">
+        <button
+            class="px-4 py-2 border flex gap-2 border-slate-200 rounded-lg text-slate-700 hover:border-slate-400 hover:text-slate-900 hover:shadow transition duration-150">
+            <img class="w-6 h-6" src="https://www.svgrepo.com/show/475656/google-color.svg" loading="lazy"
+                alt="google logo">
+            <span>Sync with Google</span>
+        </button>
+    </a>
+</div>
+<hr>
+
+<!-- Add Event Button -->
+<button id="addEventButton"
+    class="px-6 py-4 bg-blue-500 text-white rounded text-2xl hover:bg-blue-600 right-10 bottom-10 fixed"
+    style="z-index: 110;">
+    Add Event
+</button>
+
+
+<div class="flex items-center justify-center">
+    <div class="my-8 w-[73%]" id="calendar"></div>
+</div>
+
+
+<!-- Event Modal -->
+<div id="eventModal" class="fixed inset-0 flex items-center justify-center hidden bg-opacity-50 bg-gray-900 z-50 p-16">
+    <div class="bg-white p-8 rounded-lg shadow-lg w-80">
+        <h2 class="text-xl font-semibold mb-4">Add Event</h2>
+        <form id="eventForm">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="eventTitle" class="block text-sm font-medium text-gray-700">Event Title</label>
+                <input type="text" class="form-input mt-1 block w-full" id="eventTitle" name="title" required>
+            </div>
+            <div class="mb-3">
+                <label for="eventStart" class="block text-sm font-medium text-gray-700">Start Date and Time</label>
+                <input type="datetime-local" class="form-input mt-1 block w-full" id="eventStart" name="start" required>
+            </div>
+            <div class="mb-4">
+                <label for="eventEnd" class="block text-sm font-medium text-gray-700">End Date and Time</label>
+                <input type="datetime-local" class="form-input mt-1 block w-full" id="eventEnd" name="end" required>
+            </div>
+            <div class="flex justify-end">
+                <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Save</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+<script>
+    $(document).ready(function () {
+        var calendar = $('#calendar').fullCalendar({
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'month,agendaWeek,agendaDay'
+            },
+            events: '/calendar/all_events',
+            selectable: true,
+            selectHelper: true,
+            editable: true,
+            eventLimit: true,
+            select: function (start, end, allDay) {
+                $('#eventStart').val(moment(start).format('YYYY-MM-DDTHH:mm:ss'));
+                $('#eventEnd').val(moment(end).format('YYYY-MM-DDTHH:mm:ss'));
+                $('#eventModal').removeClass('hidden');
+            },
+
+            eventResize: function (event) {
+                // var start = $.fullCalendar.formatDate(event.start, "YYYY-MM-DDTHH:mm:ss");
+                // var end = $.fullCalendar.formatDate(event.end, "YYYY-MM-DDTHH:mm:ss");
+                var start = moment(event.start).format('YYYY-MM-DDTHH:mm:ss');
+                var end = moment(event.end).format('YYYY-MM-DDTHH:mm:ss');
+                var title = event.title;
+                var id = event.id;
+                $.ajax({
+                    type: "GET",
+                    url: '/calendar/update',
+                    data: { 'title': title, 'start': start + '+00:00', 'end': end + '+00:00', 'id': id },
+                    dataType: "json",
+                    success: function (data) {
+                        calendar.fullCalendar('refetchEvents');
+                        alert('Event Update');
+                    },
+                    error: function (xhr, status, error) {
+                        alert('There is a problem!!!' + error);
+                    }
+                });
+            },
+
+            eventDrop: function (event) {
+                var start = moment(event.start).format('YYYY-MM-DDTHH:mm:ss');
+                var end = moment(event.end).format('YYYY-MM-DDTHH:mm:ss');
+                var title = event.title;
+                var id = event.id;
+                $.ajax({
+                    type: "GET",
+                    url: '/calendar/update',
+                    data: { 'title': title, 'start': start, 'end': end, 'id': id },
+                    dataType: "json",
+                    success: function (data) {
+                        calendar.fullCalendar('refetchEvents');
+                        alert('Event Update');
+                    },
+                    error: function (xhr, status, error) {
+                        alert('There is a problem!!!' + error);
+                    }
+                });
+            },
+
+
+
+            eventClick: function (event) {
+                if (confirm("Are you sure you want to remove it?")) {
+                    var id = event.id;
+                    $.ajax({
+                        type: "GET",
+                        url: '/calendar/remove',
+                        data: { 'id': id },
+                        dataType: "json",
+                        success: function (data) {
+                            calendar.fullCalendar('refetchEvents');
+                            alert('Event Removed');
+                        },
+                        error: function (xhr, status, error) {
+                            alert('There is a problem!!!' + error);
+                        }
+                    });
+                }
+            },
+        });
+
+        $('#eventForm').submit(function (e) {
+            e.preventDefault();
+            var formData = $(this).serialize();
+            $.ajax({
+                type: "GET",
+                url: '/calendar/add_event',
+                data: formData,
+                dataType: "json",
+                success: function (data) {
+                    calendar.fullCalendar('refetchEvents');
+                    alert("Added Successfully");
+                    $('#eventModal').addClass('hidden');
+                },
+                error: function (xhr, status, error) {
+                    alert('There is a problem!!! ' + error);
+                }
+            });
+        });
+
+        // Show modal when clicking the "Add Event" button
+        $(document).ready(function () {
+            // Show modal when clicking the "Add Event" button
+            $('#addEventButton').click(function () {
+                $('#eventModal').removeClass('hidden');
+            });
+
+            // Close modal when clicking outside of it or pressing the Escape key
+            $(document).click(function (e) {
+                if (!$(e.target).closest('#eventModal').length && !$(e.target).is('#addEventButton')) {
+                    $('#eventModal').addClass('hidden');
+                }
+            });
+
+            $(document).on('keydown', function (e) {
+                if (e.key === 'Escape') {
+                    $('#eventModal').addClass('hidden');
+                }
+            });
+
+            // Prevent clicks within the modal from closing it
+            $('#eventModal').click(function (e) {
+                if (!$(e.target).closest('.bg-white').length) {
+                    $('#eventModal').addClass('hidden');
+                }
+            });
+        });
+
+    });
+</script>
+
+
+
+{% endblock %}

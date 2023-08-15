@@ -1,0 +1,26 @@
+{% extends "dashboard/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Calendar {% endblock %}
+
+
+{% block calendar %}
+<h1>Google Calendar Events</h1>
+
+{% if events %}
+<ul>
+    {% for event in events %}
+    <li>
+        <strong>{{ event.summary }}</strong> - {{ event.start_datetime|date:"Y" }}<br>
+        Description: {{ event.description|default:"No description available" }}
+    </li>
+    <br><br><br>
+    {% endfor %}
+</ul>
+{% else %}
+<p>No events found.</p>
+{% endif %}
+
+
+
+{% endblock %}

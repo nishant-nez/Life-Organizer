@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'dashboard',
     'reminder',
     'note',
+    'mycalendar',
     'bootstrap5',
     'crispy_forms',
     'crispy_tailwind',
@@ -176,3 +177,8 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.environ.get('EMAIL_USER')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASS')
+
+
+GOOGLE_CLIENT_ID = '429951029014-kquf7qfon2nnrcpni2085l59qdj22gh9.apps.googleusercontent.com'
+GOOGLE_CLIENT_SECRET = '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'
+GOOGLE_REDIRECT_URI = 'http://localhost:8000/mycalendar/'  # Update with your redirect URI
