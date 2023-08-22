@@ -1,0 +1,145 @@
+{% extends "dashboard/base.html" %}
+{% load crispy_forms_tags %}
+{% block title %}
+{{ goal.title }} Progress
+{% endblock %}
+
+
+<div class="container mx-auto flex justify-center items-center mt-5 mb-5">
+    <div class="content-section p-4 border" style="max-width: 600px; width: 100%;">
+        <form method="POST">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-b mb-4">
+                    {% if 'new/' in request.path %} Add
+                    {% else %} Update
+                    {% endif %} Goal
+                    {{ goal.complete_amount }}
+                </legend>
+                {{ form|crispy }}
+            </fieldset>
+            {{ goal.description }}
+            <div class="form-group mt-4">
+                <button
+                    class="border border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white font-bold py-2 px-4 w-full rounded"
+                    type="submit">
+                    {% if 'new/' in request.path %} Add
+                    {% else %} Update
+                    {% endif %} Goal
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% block goal %}
+
+<div class="m-8 p-8 flex justify-center">
+    <div class="p-10 px-12 border shadow-lg " style="max-width: 600px; width: 100%;">
+        <div class="text-center mb-4">
+            <p class="text-2xl font-bold">{{ goal.title }}</p>
+            <p>"{{ goal.description }}"</p>
+            <p>{{ goal.complete_amount }} / {{ goal.amount }}</p>
+            <p>{{ goal.percentage }}%</p>
+        </div>
+        <div>
+            <div class="flex justify-between">
+                <p>Starting Date: </p>
+                <p>{{ goal.start_date }}</p>
+            </div>
+            <div class="flex justify-between">
+                <p>Ending Date: </p>
+                <p>{{ goal.end_date }}</p>
+            </div>
+            <div class="flex justify-between">
+                <p>Remaining Days: </p>
+                <p>{{ goal.remaining_days }}</p>
+            </div>
+            <div class="flex justify-between">
+                <p>Left to Complete: </p>
+                <p>{{ goal.amount_difference }}</p>
+            </div>
+        </div>
+        <div class="flex justify-evenly m-6">
+            <a href="" class="" id="open-btn">
+                <div class="border-2 border-green-600 px-8 pt-2 pb-3 rounded text-green-600 text-5xl">
+                    <p class="text-center">+</p>
+                </div>
+            </a>
+            <a href="" class="" id="open-btn1">
+                <div class="border-2 border-red-600 px-8 pt-1 pb-4 rounded text-red-600 text-5xl">
+                    <p class="text-center">-</p>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="mx-auto p-7 rounded-b-3xl">
+    <div class="hidden rounded-lg overflow-hidden z-10 sm:left-[50%] md:left-[53%] lg:left-[58%] bg-yellow-50 shadow-2xl"
+        id="my-popover" style="position: absolute; top: 45%; transform: translate(-50%, -50%); width: 500px;">
+        <div class="p-4">
+            <div class="flex justify-between">
+                <h3 class="text-xl font-medium text-gray-800" id="dep-wdr">Deposit</h3>
+                <button type="button" class="btn btn-secondary float-right align-top bg-gray-300 py-2 px-4 rounded"
+                    id="close-btn">X</button>
+            </div>
+            <div class="mt-4">
+                <form method="post" action="{% url 'goal-action' goal.id %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="deposit">
+                    <input type="number" name="amount" placeholder="Enter amount" class="w-full rounded border-gray-500"
+                        required>
+                    <br>
+                    <div class="flex justify-center items-center">
+                        <button type="submit" class="text-white px-4 py-2 rounded m-4" id="dep-wdr-btn">Deposit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    const popover = document.querySelector('#my-popover');
+    const openBtn = document.querySelector('#open-btn');
+    const openBtn1 = document.querySelector('#open-btn1');
+    const closeBtn = document.querySelector('#close-btn');
+    const deposit_withdraw = document.querySelector('#dep-wdr');
+    const deposit_withdraw_btn = document.querySelector('#dep-wdr-btn');
+    const form_action = document.querySelector('input[name="action"]');
+
+    openBtn.addEventListener('click', (event) => {
+        event.preventDefault(); // Prevent form submission
+        deposit_withdraw.textContent = 'Deposit';
+        deposit_withdraw_btn.textContent = 'Deposit';
+        deposit_withdraw_btn.style.backgroundColor = 'green';
+        form_action.value = 'deposit';
+        popover.classList.remove('hidden');
+    });
+
+    openBtn1.addEventListener('click', (event) => {
+        event.preventDefault(); // Prevent form submission
+        deposit_withdraw.textContent = 'Withdraw';
+        deposit_withdraw_btn.textContent = 'Withdraw';
+        deposit_withdraw_btn.style.backgroundColor = 'red';
+        form_action.value = 'withdraw';
+        popover.classList.remove('hidden');
+    });
+
+    closeBtn.addEventListener('click', () => {
+        popover.classList.add('hidden');
+    });
+
+    document.addEventListener('click', (event) => {
+        if (event.target === popover) {
+            popover.classList.add('hidden');
+        }
+    });
+
+</script>
+
+{% endblock goal %}

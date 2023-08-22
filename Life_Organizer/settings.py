@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'dashboard',
     'reminder',
     'note',
+    'goal',
     'mycalendar',
     'bootstrap5',
     'crispy_forms',

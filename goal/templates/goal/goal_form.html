@@ -1,0 +1,36 @@
+{% extends "dashboard/base.html" %}
+{% load crispy_forms_tags %}
+{% block title %}
+{% if 'new/' in request.path %} Add
+{% else %} Update
+{% endif %}
+Goal {% endblock %}
+
+{% block goal %}
+<div class="container mx-auto flex justify-center items-center mt-5 mb-5">
+    <div class="content-section p-4 border" style="max-width: 600px; width: 100%;">
+        <form method="POST">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-b mb-4">
+                    {% if 'new/' in request.path %} Add
+                    {% else %} Update
+                    {% endif %} Goal
+                </legend>
+                {{ form|crispy }}
+            </fieldset>
+            <div class="form-group mt-4">
+                <button
+                    class="border border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white font-bold py-2 px-4 w-full rounded"
+                    type="submit">
+                    {% if 'new/' in request.path %} Add
+                    {% else %} Update
+                    {% endif %} Goal
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+{% endblock goal %}

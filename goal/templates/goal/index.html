@@ -1,0 +1,118 @@
+{% extends "dashboard/base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block title %}Goal {% endblock %}
+
+{% block goal %}
+
+{% if goals|length > 0 %}
+
+<div class="container m-auto mt-8 grid grid-cols-1 gap-10 mb-6">
+    {% for goal in goals %}
+    <div class="border p-2 leading-6 rounded-lg shadow-md hover:shadow-2xl">
+        <div class="flex justify-between">
+            <div class="mx-8 flex justify-center items-center">
+                <!-- <div class="w-36 h-36 rounded-full flex items-center justify-center {{ goal.theme_color }}"> -->
+                <div class="w-36 h-36 rounded-full flex items-center justify-center bg-black">
+                    <img class=" object-cover" alt="Goal image" style="width: 60px;"
+                        src="{% static 'goal/'|add:goal.icon %}">
+                </div>
+
+            </div>
+            <div class="w-full col-start-2 col-span-6 flex justify-between">
+                <div class="flex-grow cursor-pointer">
+                    <a href="/goal/{{ goal.id }}/amount/">
+                        <div class="text-center">
+                            <h2 class="font-bold text-2xl mb-2"> {{ goal.title }} </h2>
+                        </div>
+                        <hr class="w-[100%] m-auto">
+                        <div class="flex justify-center">
+                            <div class="w-[50%] mx-6 p-2 flex justify-between pt-4">
+                                <div class="">
+                                    <p>Target: </p>
+                                    <p>Current: </p>
+                                </div>
+                                <div class="text-right">
+                                    <p>{{ goal.amount }}</p>
+                                    <p class="text-green-400">{{ goal.complete_amount }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ml-12 mr-20 my-2">
+                            <div class="relative pt-1">
+                                <div class="flex mb-2 items-center justify-between">
+                                    <div>
+                                        <span
+                                            class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-white-600 bg-orange-200">
+                                            Progress
+                                        </span>
+                                    </div>
+                                    <div class="text-right">
+                                        <span class="text-xs font-semibold inline-block">
+                                            {{ goal.progress }}%
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="overflow-hidden h-2 mb-4 text-xs flex rounded bg-pink-200">
+                                    <div style="width:{{ goal.progress }}%"
+                                        class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-pink-500">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </a>
+                </div>
+                <div class="flex flex-col justify-evenly px-8">
+                    <a href="/goal/{{ goal.id }}/update/">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="2em" viewBox="0 0 576 512">
+                            <path
+                                d="M402.6 83.2l90.2 90.2c3.8 3.8 3.8 10 0 13.8L274.4 405.6l-92.8 10.3c-12.4 1.4-22.9-9.1-21.5-21.5l10.3-92.8L388.8 83.2c3.8-3.8 10-3.8 13.8 0zm162-22.9l-48.8-48.8c-15.2-15.2-39.9-15.2-55.2 0l-35.4 35.4c-3.8 3.8-3.8 10 0 13.8l90.2 90.2c3.8 3.8 10 3.8 13.8 0l35.4-35.4c15.2-15.3 15.2-40 0-55.2zM384 346.2V448H64V128h229.8c3.2 0 6.2-1.3 8.5-3.5l40-40c7.6-7.6 2.2-20.5-8.5-20.5H48C21.5 64 0 85.5 0 112v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V306.2c0-10.7-12.9-16-20.5-8.5l-40 40c-2.2 2.3-3.5 5.3-3.5 8.5z" />
+                        </svg>
+                    </a>
+                    <a href="/goal/{{ goal.id }}/delete">
+                        <svg id="deletesvg" xmlns="http://www.w3.org/2000/svg" height="2em" style="fill: #b92727;"
+                            viewBox="0 0 448 512">
+                            <path
+                                d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z" />
+                        </svg>
+                    </a>
+                </div>
+                <!-- Goal Description -->
+            </div>
+        </div>
+
+        <!-- <span class="">Last updated: <i class="italic font-light"> {{ goal.last_updated|date:"F d, Y h:i A" }}
+            </i><br />
+
+            <p class="py-4">
+                {{ goal.content|slice:":300" }}{% if goal.content|length > 300 %}...{% endif %}
+            </p> -->
+
+        <!-- <p>by: {{ goal.user }}</p> <br> -->
+        <!-- <a class="border py-2 px-4 mx-4 bg-green-600 text-white rounded cursor-pointer"
+                href="/goal/{{ goal.id }}/update/">
+                Update
+            </a>
+            <a class="border py-2 px-4 mx-4 bg-red-600 text-white rounded cursor-pointer"
+                href="/goal/{{ goal.id }}/delete/">
+                Delete
+            </a> -->
+
+    </div>
+    {% endfor %}
+</div>
+
+<div class="fixed bottom-4 right-4 p-4">
+    <a href="/goal/new/"
+        class="p-4 rounded border border-blue-400 bg-blue-400 hover:border-blue-500 hover:bg-blue-500 text-white">
+        Add Goal
+    </a>
+</div>
+
+{% else %}
+No goals found!
+{% endif %}
+
+{% endblock goal %}
