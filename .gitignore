@@ -5,3 +5,10 @@
 guide.txt
 
 .env
+
+celery*.bak
+celery*.dat
+celery*.dir
+
+error.log
+app.log

@@ -37,6 +37,7 @@ urlpatterns = [
     path('note/', include('note.urls')),
     path('calendar/', include('mycalendar.urls')),
     path('goal/', include('goal.urls')),
+    path('analytics/', include('analytics.urls')),
     path("__reload__/", include("django_browser_reload.urls")),
 ]
 

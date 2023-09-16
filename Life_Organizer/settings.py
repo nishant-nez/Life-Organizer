@@ -43,9 +43,13 @@ INSTALLED_APPS = [
     'note',
     'goal',
     'mycalendar',
+    'analytics',
     'bootstrap5',
     'crispy_forms',
     'crispy_tailwind',
+    'django_celery_beat',
+    # 'django_crontab',
+    # 'background_task',
     # 'crispy_bootstrap5',
     'tailwind',
     'theme',
@@ -182,4 +186,72 @@ EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASS')
 
 GOOGLE_CLIENT_ID = '429951029014-kquf7qfon2nnrcpni2085l59qdj22gh9.apps.googleusercontent.com'
 GOOGLE_CLIENT_SECRET = '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'
-GOOGLE_REDIRECT_URI = 'http://localhost:8000/mycalendar/'  # Update with your redirect URI
+# Update with your redirect URI
+GOOGLE_REDIRECT_URI = 'http://localhost:8000/mycalendar/'
+
+
+# CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_URL')
+# CELERY_RESULT_BACKEND = f"db+postgresql://{os.getenv('DATABASE_USER')}:{os.getenv('DATABASE_PASSWORD')}@{os.getenv('DATABASE_HOST')}:{os.getenv('DATABASE_PORT')}/{os.getenv('DATABASE_NAME')}"
+# CELERY_ACCEPT_CONTENT = ['json']
+# CELERY_TASK_SERIALIZER = 'json'
+# CELERY_RESULT_SERIALIZER = 'json'
+# CELERY_TIMEZONE = 'Asia/Kathmandu'
+
+# project_root = os.path.dirname(os.path.abspath(__file__))
+
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'handlers': {
+#         'file': {
+#             'level': 'DEBUG',
+#             'class': 'logging.FileHandler',
+#             'filename': os.path.join(project_root, 'logs', 'debug.log'),
+#         },
+#     },
+#     'loggers': {
+#         'django': {
+#             'handlers': ['file'],
+#             'level': 'DEBUG',
+#             'propagate': True,
+#         },
+#     },
+# }
+
+
+# CRONJOBS = [
+#     ('*/1 * * * *', 'reminder.cron.print_hello')
+# ]
+
+
+CELERY_BROKER_URL = 'amqp://guest:guest@localhost:5672//'  # Use your broker URL
+CELERY_RESULT_BACKEND = 'rpc://'  # Use the RPC result backend
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = "Asia/Kathmandu"
+
+# Optional: Disable timezone conversion for crontab schedules (if necessary)
+# CELERY_ENABLE_UTC = False
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file_info': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'app.log'),
+        },
+        'file_error': {  # Add this handler for ERROR level and higher
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            # Specify a separate log file
+            'filename': os.path.join(BASE_DIR, 'error.log'),
+        },
+    },
+    'root': {
+        'handlers': ['file_info', 'file_error'],  # Include both handlers
+        'level': 'INFO',
+    },
+}
