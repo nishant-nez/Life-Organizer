@@ -6,34 +6,57 @@
 {% block note %}
 <div class="container m-auto mt-8 grid grid-cols-1 gap-8 mb-6">
     {% for note in notes %}
-    <div class="border p-10 leading-6">
-        <h2 class="font-bold text-xl mb-2"> <a href="{% url 'note-detail' note.id %}">{{ note.title }}</a>
-        </h2>
-        <span class="">Last updated: <i class="italic font-light"> {{ note.last_updated|date:"F d, Y h:i A" }}
-            </i><br />
+    <div class="border p-10 leading-6 rounded-lg shadow-md hover:shadow-2xl">
+        <div class="mx-8 flex justify-between">
+            <div class="note-detail-link cursor-pointer" data-url="{% url 'note-detail' note.id %}">
+                <h2 class="font-bold text-xl mb-2"> <a href="{% url 'note-detail' note.id %}">{{ note.title }}</a>
+                </h2>
 
-            <p class="py-4">
-                {{ note.content|slice:":300" }}{% if note.content|length > 300 %}...{% endif %}
-            </p>
+                <div class="pr-6">
+                    <span>Last updated: <i class="italic font-light"> {{ note.last_updated|date:"F d, Y h:i A" }}
+                        </i><br />
 
-            <p>by: {{ note.user }}</p> <br>
-            <a class="border py-2 px-4 mx-4 bg-green-600 text-white rounded cursor-pointer"
-                href="/note/{{ note.id }}/update/">
-                Update
-            </a>
-            <a class="border py-2 px-4 mx-4 bg-red-600 text-white rounded cursor-pointer"
-                href="/note/{{ note.id }}/delete/">
-                Delete
-            </a>
+                        <p class="py-4 text-gray-500">
+                            {{ note.content|slice:":300" }}{% if note.content|length > 300 %}...{% endif %}
+                        </p>
+                </div>
+            </div>
+            <div class="flex flex-col justify-evenly px-8">
+                <a href="/note/{{ note.id }}/update/">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="2em" viewBox="0 0 576 512">
+                        <path
+                            d="M402.6 83.2l90.2 90.2c3.8 3.8 3.8 10 0 13.8L274.4 405.6l-92.8 10.3c-12.4 1.4-22.9-9.1-21.5-21.5l10.3-92.8L388.8 83.2c3.8-3.8 10-3.8 13.8 0zm162-22.9l-48.8-48.8c-15.2-15.2-39.9-15.2-55.2 0l-35.4 35.4c-3.8 3.8-3.8 10 0 13.8l90.2 90.2c3.8 3.8 10 3.8 13.8 0l35.4-35.4c15.2-15.3 15.2-40 0-55.2zM384 346.2V448H64V128h229.8c3.2 0 6.2-1.3 8.5-3.5l40-40c7.6-7.6 2.2-20.5-8.5-20.5H48C21.5 64 0 85.5 0 112v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V306.2c0-10.7-12.9-16-20.5-8.5l-40 40c-2.2 2.3-3.5 5.3-3.5 8.5z" />
+                    </svg>
+                </a>
+                <a href="/note/{{ note.id }}/delete/">
+                    <svg id="deletesvg" xmlns="http://www.w3.org/2000/svg" height="2em" style="fill: #b92727;"
+                        viewBox="0 0 448 512">
+                        <path
+                            d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z" />
+                    </svg>
+                </a>
+            </div>
+        </div>
     </div>
     {% endfor %}
 </div>
 
-<div class="fixed bottom-4 right-4 p-4">
-    <a href="/note/new/"
-        class="p-4 rounded border border-blue-400 bg-blue-400 hover:border-blue-500 hover:bg-blue-500 text-white">
+<button type="button"
+    class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-lg px-8 py-4 text-center mr-4 mb-4 right-10 bottom-6 fixed">
+    <a href="/note/new/" class="">
         Add Note
     </a>
-</div>
+</button>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".note-detail-link").click(function () {
+            var url = $(this).data("url");
+            window.location.href = url;
+        });
+    });
+</script>
+
 
 {% endblock note %}

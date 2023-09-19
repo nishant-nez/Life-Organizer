@@ -1,17 +1,301 @@
 {% extends "dashboard/base.html" %}
+{% load static %}
 {% block title %}Dashboard {% endblock %}
 {% block dashboard %}
-<h1>Welcome, {{ user.username }}</h1>
-{% for content in contents %}
-<!-- <article class="media content-section">
-    <div class="media-body">
-        <div class="article-metadata">
-            <a class="mr-2" href="#">{{ content.author }}</a>
-            <small class="text-muted">{{ content.date_posted }}</small>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+<div class="text-center m-6">
+    <p class="font-bold text-2xl">Welcome, {{ user.username }}!</p>
+    <p class="font-light">A new way to organize your daily schedules.</p>
+</div>
+<hr>
+
+<div class="flex flex-wrap justify-evenly">
+    <!-- First Card -->
+    <div
+        class="flex-1 bg-gray-100 rounded-lg shadow-lg p-8 flex flex-col items-center mr-6 my-8 cursor-pointer hover:shadow-2xl">
+        <div class="text-2xl font-semibold">
+            {{ total_reminders }}
         </div>
-        <h2><a class="article-title" href="#">{{ content.title }}</a></h2>
-        <p class="article-content">{{ content.content }}</p>
+        <p class="mt-2 text-center">Reminders</p>
     </div>
-</article> -->
-{% endfor %}
+
+    <!-- Second Card -->
+    <div onclick=""
+        class="flex-1 bg-gray-100 rounded-lg shadow-lg p-8 flex flex-col items-center mx-6 my-8 cursor-pointer hover:shadow-2xl">
+        <div class="text-2xl font-semibold">
+            {{ total_notes }}
+        </div>
+        <p class="mt-2 text-center">Notes</p>
+    </div>
+
+    <!-- Third Card -->
+    <div
+        class="flex-1 bg-gray-100 rounded-lg shadow-lg p-8 flex flex-col items-center mx-6 my-8 cursor-pointer hover:shadow-2xl">
+        <div class="text-2xl font-semibold">
+            {{ total_cals }}
+        </div>
+        <p class="mt-2 text-center">Calendar Events</p>
+    </div>
+
+    <!-- Fourth Card -->
+    <div
+        class="flex-1 bg-gray-100 rounded-lg shadow-lg p-8 flex flex-col items-center ml-6 my-8 cursor-pointer hover:shadow-2xl">
+        <div class="text-2xl font-semibold">
+            {{ total_goals }}
+        </div>
+        <p class="mt-2 text-center">Goals</p>
+    </div>
+</div>
+
+
+
+<hr>
+{% if total_reminders != 0 %}
+<div class="mt-8 mb-6 mx-auto p-4 bg-white rounded-lg shadow-md hover:shadow-2xl w-[49%] float-left">
+    <div class="mb-4 chart-container">
+        <canvas id="reminderChart"></canvas>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        // Parse Django variables and set default values if they are not defined
+        let completedReminders = parseInt("{{ completed_reminders|default_if_none:'0' }}");
+        let totalReminders = parseInt("{{ total_reminders|default_if_none:'0' }}");
+
+        // Check if the parsed values are valid numbers, if not, set them to 0
+        if (isNaN(completedReminders)) {
+            completedReminders = 0;
+        }
+        if (isNaN(totalReminders)) {
+            totalReminders = 0;
+        }
+
+        let ctx = document.getElementById('reminderChart');
+        let chart;
+
+        function createChart() {
+            chart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Completed Reminders', 'Incomplete Reminders'],
+                    datasets: [{
+                        data: [completedReminders, totalReminders - completedReminders],
+                        backgroundColor: ['green', 'red'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Completed vs Incomplete Reminders',
+                            'position': 'bottom',
+                        }
+                    }
+                }
+            });
+        }
+
+        function resizeChart() {
+            if (chart) {
+                chart.destroy();
+            }
+            createChart();
+        }
+
+        createChart();
+        window.addEventListener('resize', resizeChart);
+    </script>
+</div>
+
+<style>
+    /* Center the chart and make it larger */
+    .chart-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        max-width: 600px;
+        /* Adjust the maximum width as needed */
+        margin: 0 auto;
+        /* Center horizontally */
+        max-height: 50vh;
+        /* Adjust the maximum height as needed */
+    }
+</style>
+
+{% else %}
+<p>No reminders found!</p>
+{% endif %}
+
+{% if total_goals != 0 %}
+<div class="mt-8 mb-6 mx-auto p-4 bg-white rounded-lg shadow-md hover:shadow-2xl w-[49%] float-right">
+    <div class="mb-4 chart-container">
+        <canvas id="goalPieChart"></canvas>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        // Parse Django variables and set default values if they are not defined
+        let completedGoalsPie = parseInt("{{ completed_goals|default_if_none:'0' }}");
+        let totalGoalsPie = parseInt("{{ total_goals|default_if_none:'0' }}");
+
+        // Check if the parsed values are valid numbers, if not, set them to 0
+        if (isNaN(completedGoalsPie)) {
+            completedGoalsPie = 0;
+        }
+        if (isNaN(totalGoalsPie)) {
+            totalGoalsPie = 0;
+        }
+
+        let goalctx = document.getElementById('goalPieChart');
+        let goalchart;
+
+        function createChart() {
+            goalchart = new Chart(goalctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Completed Goals', 'Incomplete Goals'],
+                    datasets: [{
+                        data: [completedGoalsPie, totalGoalsPie - completedGoalsPie],
+                        backgroundColor: ['green', 'red'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Completed vs Incomplete Goals',
+                            'position': 'bottom',
+                        }
+                    }
+                }
+            });
+        }
+
+        function resizeChart() {
+            if (goalchart) {
+                goalchart.destroy();
+            }
+            createChart();
+        }
+
+        createChart();
+        window.addEventListener('resize', resizeChart);
+    </script>
+</div>
+
+<style>
+    /* Center the chart and make it larger */
+    .chart-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        max-width: 600px;
+        /* Adjust the maximum width as needed */
+        margin: 0 auto;
+        /* Center horizontally */
+        max-height: 50vh;
+        /* Adjust the maximum height as needed */
+    }
+</style>
+
+<br><br><br>
+
+<div class="mt-10 mx-auto p-4 bg-white rounded-lg shadow-md hover:shadow-2xl">
+    <div class="mb-4">
+        <canvas id="goalChart" class="w-full h-auto"></canvas>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        let gctx = document.getElementById('goalChart');
+        let gchart;
+
+        // Parse the JSON data from the context
+        let goalCategoryData = JSON.parse('{{ goal_category_json|escapejs }}');
+
+        // Extract categories and counts
+        let categories = goalCategoryData.map(entry => entry.category);
+        let counts = goalCategoryData.map(entry => entry.count);
+
+        function createGoalChart() {
+            gchart = new Chart(gctx, {
+                type: 'bar',
+                data: {
+                    labels: categories,
+                    datasets: [{
+                        label: 'Categories of Goals',
+                        data: counts,
+                        backgroundColor: [
+                            'rgb(75, 192, 192)',
+                            'rgb(255, 99, 132)',
+                            'rgb(54, 162, 235)',
+                            'rgb(255, 159, 64)',
+                            'rgb(255, 205, 86)',
+                            'rgb(153, 102, 255)',
+                            'rgb(255, 77, 77)',
+                            'rgb(75, 192, 150)',
+                            'rgb(255, 120, 203)',
+                            'rgb(100, 149, 237)',
+                            // Add more colors if needed
+                        ],
+
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            stepSize: 1 // You can adjust the step size as needed
+                        }
+                    },
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Categories of Goals',
+                            'position': 'bottom',
+                        }
+                    }
+                }
+            });
+        }
+
+        // Create the initial chart
+        createGoalChart();
+
+        // Handle window resize events
+        window.addEventListener('resize', () => {
+            gchart.resize(); // Resize the chart
+        });
+    </script>
+</div>
+
+{% else %}
+<p>No Goals found!</p>
+{% endif %}
+
+
+{% if total_notes != 0 %}
+<br><br><br>
+<!-- Word Cloud -->
+<div class="mt-6 mb-8 mx-auto p-4 bg-white rounded-lg shadow-md hover:shadow-2xl">
+    <!-- Display the word cloud image -->
+    <img src="{{ wordcloud_image_path }}" alt="Word Cloud" class="w-full h-auto mb-3" />
+    <hr>
+    <p class="mt-3 text-center">Notes Word Cloud</p>
+</div>
+
+
+{% else %}
+<p>No Notes found!</p>
+{% endif %}
+
 {% endblock dashboard %}

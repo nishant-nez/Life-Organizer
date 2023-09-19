@@ -12,3 +12,5 @@ celery*.dir
 
 error.log
 app.log
+
+.vscode/

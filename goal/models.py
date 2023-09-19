@@ -3,15 +3,14 @@ from datetime import datetime
 from django.contrib.auth.models import User
 
 
-
 class Goal(models.Model):
     notification_choices = {
-        ('None', 'None'),
         ('email', 'Email'),
-        ('sms','SMS'),
-        ('both','Both'),
+        ('None', 'None'),
+        # ('sms', 'SMS'),
+        # ('both', 'Both'),
     }
-    category_choices= {
+    category_choices = {
         ('savings', 'Savings'),
         ('spendings', 'Spendings'),
         ('entertainment', 'Entertainment'),
@@ -29,7 +28,8 @@ class Goal(models.Model):
     description = models.TextField()
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
-    notification_mode = models.CharField(max_length=5, choices=notification_choices, default=None)
+    notification_mode = models.CharField(
+        max_length=5, choices=notification_choices, default=None)
     category = models.CharField(choices=category_choices)
     complete_amount = models.IntegerField(default=0)
 
@@ -37,7 +37,7 @@ class Goal(models.Model):
 
     def progress(self):
         return int(self.complete_amount / self.amount * 100)
-    
+
     def theme_color(self):
         colors = {
             'savings': 'bg-green-300',
@@ -51,22 +51,16 @@ class Goal(models.Model):
             'personal development': 'bg-pink-300',
             'other': 'bg-gray-300',
         }
-        print('\n\nanother return ' + colors.get(self.category, 'default_color'))
         return colors.get(self.category, 'bg-pink-300')
 
-
-
     def icon(self):
-        print("\n\nHere:: " + self.category.replace(' ', '_') + '.png')
         return self.category.replace(' ', '_') + '.png'
-    
 
     def remaining_days(self):
         today = datetime.now().replace(tzinfo=None)
         end_date_naive = self.end_date.replace(tzinfo=None)
         remaining = (end_date_naive - today).days
         return remaining
-    
 
     def percentage(self):
         return round((self.complete_amount / self.amount * 100), 1)
@@ -75,7 +69,7 @@ class Goal(models.Model):
         if self.complete_amount is not None:
             return self.amount - self.complete_amount
         return None
-    
+
     def change_amount(self, change_value):
         print(self.complete_amount + change_value)
-        return 100
+        return self.complete_amount + change_value
