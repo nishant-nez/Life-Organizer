@@ -4,18 +4,39 @@
 {% load crispy_forms_tags %}
 {% block profile %}
 
+<style>
+    .gray-label {
+        color: #718096;
+        /* Use gray-200 color code or any other desired color for regular labels */
+    }
+
+    .change-label {
+        color: #718096;
+        /* Use the same color as gray-200 for the "Change" label */
+    }
+
+    #div_id_image>label,
+    #div_id_image,
+    #div_id_username>label,
+    #div_id_first_name>label,
+    #div_id_last_name>label,
+    #div_id_email>label {
+        color: rgb(229 231 235);
+    }
+</style>
+
 <div class="flex items-center justify-center w-full mt-12">
-    <div class="border p-10 pb-0 mb-10">
+    <div class="border-2 border-gray-800 rounded-lg p-10 pb-0 mb-10">
         <div class="flex items-center mb-6">
-            <div class="w-24 h-24 rounded-full overflow-hidden">
+            <div class="w-24 h-24 rounded-full overflow-hidden border">
                 <img class="w-full h-full object-cover" alt="user-profile" src="{{ user.profile.image.url }}">
             </div>
             <div class="flex flex-col ml-6">
-                <h1 class="font-bold text-xl mb-0">{{ user.username }}</h1>
+                <h1 class="font-bold text-xl mb-0 dark:text-gray-200">{{ user.username }}</h1>
                 {% if user.email == '' %}
-                <p>No email provided.</p>
+                <p class="dark:text-gray-200">No email provided.</p>
                 {% else %}
-                <p>{{ user.email }}</p>
+                <p class="dark:text-gray-200">{{ user.email }}</p>
                 {% endif %}
             </div>
         </div>
@@ -23,13 +44,13 @@
         <form method="POST" enctype="multipart/form-data" class="m-10 pr-16 space-y-4 w-full">
             {% csrf_token %}
             <fieldset class="form-group">
-                <legend class="mb-4 font-bold text-xl">Profile Info</legend>
+                <legend class="mb-4 font-bold text-xl dark:text-gray-200">Profile Info</legend>
                 {{ u_form|crispy }}
                 {{ p_form|crispy }}
 
             </fieldset>
             <div class="form-group mt-2">
-                <button class="border px-8 py-4 mt-2 rounded-xl text-white font-bold bg-blue-500 hover:bg-blue-900"
+                <button class="px-8 py-4 mt-2 rounded-xl text-white font-bold bg-blue-500 hover:bg-blue-900"
                     type="submit">Update</button>
             </div>
         </form>

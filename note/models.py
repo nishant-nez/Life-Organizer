@@ -35,11 +35,12 @@ def generate_word_cloud_for_user(user):
 
     # Generate the word cloud
     wordcloud = WordCloud(width=1920, height=1080,
-                          background_color='white', colormap='viridis')
+                          background_color='#374151', colormap='viridis')
     wordcloud.generate(note_content)
 
     # Get the path to the static folder inside the 'analytics' app
-    static_folder = os.path.join(settings.BASE_DIR, 'analytics', 'static')
+    static_folder = os.path.join(
+        settings.BASE_DIR, 'dashboard', 'static', 'dashboard')
 
     # Save the word cloud image to the static folder with the user's username
     wordcloud_image_path = os.path.join(

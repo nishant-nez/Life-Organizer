@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     'note',
     'goal',
     'mycalendar',
-    'analytics',
     'bootstrap5',
     'crispy_forms',
     'crispy_tailwind',

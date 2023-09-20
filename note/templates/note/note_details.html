@@ -5,18 +5,17 @@
 
 
 {% block reminder %}
-<div class="flex items-center justify-center mt-auto text-xl">
-    <div class="border p-10 leading-6 mb-14">
-        <h2 class="font-bold text-3xl mb-2">
-            <a href="{% url 'note-detail' note.id %}">
-                {{ object.title }}
-            </a>
+<div class="flex items-center justify-center mt-auto text-xl min-h-screen">
+    <div class="border p-10 leading-6 mb-14 rounded-lg">
+        <h2 class="font-bold text-3xl mb-2 dark:text-gray-200 text-center p-4">
+            {{ object.title }}
         </h2>
-        <span class="">Added on: </span> <i class="italic font-light"> {{ object.created_at|date:"F d, Y h:i A" }}
-        </i><br />
+        <hr class="m-2">
+        <span class="text-gray-500 float-right italic">Added on: {{ object.created_at|date:"F d, Y h:i A" }}</span>
 
-        <p class="py-4">{{ object.content }}</p>
-        <p>by: {{ object.user }}</p> <br>
+        <br />
+
+        <p class="py-6 dark:text-gray-200">{{ object.content }}</p> <br>
     </div>
 </div>
 {% endblock reminder %}

@@ -60,7 +60,7 @@ class Goal(models.Model):
         today = datetime.now().replace(tzinfo=None)
         end_date_naive = self.end_date.replace(tzinfo=None)
         remaining = (end_date_naive - today).days
-        return remaining
+        return abs(remaining)
 
     def percentage(self):
         return round((self.complete_amount / self.amount * 100), 1)

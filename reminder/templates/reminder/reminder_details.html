@@ -5,9 +5,9 @@
 
 
 {% block reminder %}
-<div class="h-screen flex items-center justify-center mt-auto text-xl">
-    <div class="border p-10 leading-6 mb-14">
-        <h2 class="font-bold text-3xl mb-2">
+<div class="min-h-[100vh] flex items-center justify-center mt-auto text-xl dark:text-gray-200">
+    <div class="border p-10 leading-6 mb-14 h-100vh">
+        <h2 class="font-bold text-3xl mb-2 dark:text-gray-200">
             <a href="{% url 'reminder-detail' reminder.id %}">
                 {{ object.title }}
             </a>

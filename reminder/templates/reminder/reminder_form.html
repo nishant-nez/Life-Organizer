@@ -7,8 +7,8 @@
 Reminder {% endblock %}
 
 {% block reminder %}
-<div class="container mx-auto flex justify-center items-center mt-5 mb-5">
-    <div class="content-section p-4 border" style="max-width: 600px; width: 100%;">
+<div class="container mx-auto flex justify-center items-center mt-5 mb-5 dark:text-gray-200">
+    <div class="content-section border rounded-lg p-8" style="max-width: 600px; width: 100%;">
         <form method="POST">
             {% csrf_token %}
             <fieldset class="form-group">

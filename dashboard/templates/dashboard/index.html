@@ -4,111 +4,203 @@
 {% block dashboard %}
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 
-<div class="text-center m-6">
-    <p class="font-bold text-2xl">Welcome, {{ user.username }}!</p>
-    <p class="font-light">A new way to organize your daily schedules.</p>
+
+<div class="m-6 min-w-full">
+    <div class="flex-col items-center content-center text-center">
+        <p class="font-bold text-2xl dark:text-gray-200">Welcome, <span class="dark:text-[#ECB365]">
+                {{ user.username }}!</span></p>
+        <p class="font-light dark:text-gray-200">A new way to organize your priorities.</p>
+    </div>
 </div>
-<hr>
+<hr class="w-[30%] h-1 mx-auto my-2 bg-gray-100 border-0 rounded dark:bg-gray-700">
 
 <div class="flex flex-wrap justify-evenly">
     <!-- First Card -->
     <div
-        class="flex-1 bg-gray-100 rounded-lg shadow-lg p-8 flex flex-col items-center mr-6 my-8 cursor-pointer hover:shadow-2xl">
-        <div class="text-2xl font-semibold">
+        class="flex-1 dark:bg-gray-700 rounded-lg shadow-lg p-8 flex flex-col items-center mr-6 my-8 cursor-pointer hover:shadow-2xl">
+        <div class="text-2xl font-semibold dark:text-gray-200">
             {{ total_reminders }}
         </div>
-        <p class="mt-2 text-center">Reminders</p>
+        <p class="mt-2 text-center dark:text-gray-200">Reminders</p>
     </div>
 
     <!-- Second Card -->
     <div onclick=""
-        class="flex-1 bg-gray-100 rounded-lg shadow-lg p-8 flex flex-col items-center mx-6 my-8 cursor-pointer hover:shadow-2xl">
-        <div class="text-2xl font-semibold">
+        class="flex-1 dark:bg-gray-700 rounded-lg shadow-lg p-8 flex flex-col items-center mx-6 my-8 cursor-pointer hover:shadow-2xl">
+        <div class="text-2xl font-semibold dark:text-gray-200">
             {{ total_notes }}
         </div>
-        <p class="mt-2 text-center">Notes</p>
+        <p class="mt-2 text-center dark:text-gray-200">Notes</p>
     </div>
 
     <!-- Third Card -->
     <div
-        class="flex-1 bg-gray-100 rounded-lg shadow-lg p-8 flex flex-col items-center mx-6 my-8 cursor-pointer hover:shadow-2xl">
-        <div class="text-2xl font-semibold">
+        class="flex-1 dark:bg-gray-700 rounded-lg shadow-lg p-8 flex flex-col items-center mx-6 my-8 cursor-pointer hover:shadow-2xl">
+        <div class="text-2xl font-semibold dark:text-gray-200">
             {{ total_cals }}
         </div>
-        <p class="mt-2 text-center">Calendar Events</p>
+        <p class="mt-2 text-center dark:text-gray-200">Calendar Events</p>
     </div>
 
     <!-- Fourth Card -->
     <div
-        class="flex-1 bg-gray-100 rounded-lg shadow-lg p-8 flex flex-col items-center ml-6 my-8 cursor-pointer hover:shadow-2xl">
-        <div class="text-2xl font-semibold">
+        class="flex-1 dark:bg-gray-700 rounded-lg shadow-lg p-8 flex flex-col items-center ml-6 my-8 cursor-pointer hover:shadow-2xl">
+        <div class="text-2xl font-semibold dark:text-gray-200">
             {{ total_goals }}
         </div>
-        <p class="mt-2 text-center">Goals</p>
+        <p class="mt-2 text-center dark:text-gray-200">Goals</p>
     </div>
 </div>
 
 
 
-<hr>
-{% if total_reminders != 0 %}
-<div class="mt-8 mb-6 mx-auto p-4 bg-white rounded-lg shadow-md hover:shadow-2xl w-[49%] float-left">
-    <div class="mb-4 chart-container">
-        <canvas id="reminderChart"></canvas>
-    </div>
+<hr class="h-1 mx-auto bg-gray-100 border-0 rounded dark:bg-gray-700">
+<div class="flex justify-between gap-7">
+    {% if total_reminders != 0 %}
+    <div class="mt-8 mb-6 p-4 bg-white rounded-lg shadow-md hover:shadow-2xl w-[49%] dark:bg-gray-700">
+        <div class="mb-4 chart-container">
+            <canvas id="reminderChart"></canvas>
+        </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <script>
-        // Parse Django variables and set default values if they are not defined
-        let completedReminders = parseInt("{{ completed_reminders|default_if_none:'0' }}");
-        let totalReminders = parseInt("{{ total_reminders|default_if_none:'0' }}");
+        <script>
+            // Parse Django variables and set default values if they are not defined
+            let completedReminders = parseInt("{{ completed_reminders|default_if_none:'0' }}");
+            let totalReminders = parseInt("{{ total_reminders|default_if_none:'0' }}");
 
-        // Check if the parsed values are valid numbers, if not, set them to 0
-        if (isNaN(completedReminders)) {
-            completedReminders = 0;
-        }
-        if (isNaN(totalReminders)) {
-            totalReminders = 0;
-        }
+            // Check if the parsed values are valid numbers, if not, set them to 0
+            if (isNaN(completedReminders)) {
+                completedReminders = 0;
+            }
+            if (isNaN(totalReminders)) {
+                totalReminders = 0;
+            }
 
-        let ctx = document.getElementById('reminderChart');
-        let chart;
+            let ctx = document.getElementById('reminderChart');
+            let chart;
 
-        function createChart() {
-            chart = new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Completed Reminders', 'Incomplete Reminders'],
-                    datasets: [{
-                        data: [completedReminders, totalReminders - completedReminders],
-                        backgroundColor: ['green', 'red'],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        title: {
-                            display: true,
-                            text: 'Completed vs Incomplete Reminders',
-                            'position': 'bottom',
+            function createChart() {
+                chart = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Completed Reminders', 'Incomplete Reminders'],
+                        datasets: [{
+                            data: [completedReminders, totalReminders - completedReminders],
+                            backgroundColor: ['#8ac926', '#fa6b84'],
+                            borderWidth: 1,
+                            borderColor: '#374151',
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        color: 'rgb(170 170 170)',
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Completed vs Incomplete Reminders',
+                                'position': 'bottom',
+                                'color': 'rgb(170 170 170)',
+                            }
                         }
                     }
-                }
-            });
-        }
-
-        function resizeChart() {
-            if (chart) {
-                chart.destroy();
+                });
             }
-            createChart();
-        }
 
-        createChart();
-        window.addEventListener('resize', resizeChart);
-    </script>
+            function resizeChart() {
+                if (chart) {
+                    chart.destroy();
+                }
+                createChart();
+            }
+
+            createChart();
+            window.addEventListener('resize', resizeChart);
+        </script>
+    </div>
+
+    <style>
+        /* Center the chart and make it larger */
+        .chart-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            max-width: 600px;
+            /* Adjust the maximum width as needed */
+            margin: 0 auto;
+            /* Center horizontally */
+            max-height: 50vh;
+            /* Adjust the maximum height as needed */
+        }
+    </style>
+
+    {% else %}
+    <p>No reminders found!</p>
+    {% endif %}
+
+    {% if total_goals != 0 %}
+    <div class="mt-8 mb-6 p-4 bg-white rounded-lg shadow-md hover:shadow-2xl w-[49%] dark:bg-gray-700">
+        <div class="mb-4 chart-container">
+            <canvas id="goalPieChart"></canvas>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+        <script>
+            // Parse Django variables and set default values if they are not defined
+            let completedGoalsPie = parseInt("{{ completed_goals|default_if_none:'0' }}");
+            let totalGoalsPie = parseInt("{{ total_goals|default_if_none:'0' }}");
+
+            // Check if the parsed values are valid numbers, if not, set them to 0
+            if (isNaN(completedGoalsPie)) {
+                completedGoalsPie = 0;
+            }
+            if (isNaN(totalGoalsPie)) {
+                totalGoalsPie = 0;
+            }
+
+            let goalctx = document.getElementById('goalPieChart');
+            let goalchart;
+
+            function createChart() {
+                goalchart = new Chart(goalctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Completed Goals', 'Incomplete Goals'],
+                        datasets: [{
+                            data: [completedGoalsPie, totalGoalsPie - completedGoalsPie],
+                            backgroundColor: ['#8ac926', '#fa6b84'],
+                            borderWidth: 1,
+                            borderColor: '#374151',
+                        }]
+                    },
+                    options: {
+                        color: 'rgb(170 170 170)',
+                        responsive: true,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Completed vs Incomplete Goals',
+                                'position': 'bottom',
+                                color: 'rgb(170 170 170)',
+                            }
+                        }
+                    }
+                });
+            }
+
+            function resizeChart() {
+                if (goalchart) {
+                    goalchart.destroy();
+                }
+                createChart();
+            }
+
+            createChart();
+            window.addEventListener('resize', resizeChart);
+        </script>
+    </div>
+
 </div>
 
 <style>
@@ -126,88 +218,8 @@
     }
 </style>
 
-{% else %}
-<p>No reminders found!</p>
-{% endif %}
 
-{% if total_goals != 0 %}
-<div class="mt-8 mb-6 mx-auto p-4 bg-white rounded-lg shadow-md hover:shadow-2xl w-[49%] float-right">
-    <div class="mb-4 chart-container">
-        <canvas id="goalPieChart"></canvas>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <script>
-        // Parse Django variables and set default values if they are not defined
-        let completedGoalsPie = parseInt("{{ completed_goals|default_if_none:'0' }}");
-        let totalGoalsPie = parseInt("{{ total_goals|default_if_none:'0' }}");
-
-        // Check if the parsed values are valid numbers, if not, set them to 0
-        if (isNaN(completedGoalsPie)) {
-            completedGoalsPie = 0;
-        }
-        if (isNaN(totalGoalsPie)) {
-            totalGoalsPie = 0;
-        }
-
-        let goalctx = document.getElementById('goalPieChart');
-        let goalchart;
-
-        function createChart() {
-            goalchart = new Chart(goalctx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Completed Goals', 'Incomplete Goals'],
-                    datasets: [{
-                        data: [completedGoalsPie, totalGoalsPie - completedGoalsPie],
-                        backgroundColor: ['green', 'red'],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        title: {
-                            display: true,
-                            text: 'Completed vs Incomplete Goals',
-                            'position': 'bottom',
-                        }
-                    }
-                }
-            });
-        }
-
-        function resizeChart() {
-            if (goalchart) {
-                goalchart.destroy();
-            }
-            createChart();
-        }
-
-        createChart();
-        window.addEventListener('resize', resizeChart);
-    </script>
-</div>
-
-<style>
-    /* Center the chart and make it larger */
-    .chart-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        max-width: 600px;
-        /* Adjust the maximum width as needed */
-        margin: 0 auto;
-        /* Center horizontally */
-        max-height: 50vh;
-        /* Adjust the maximum height as needed */
-    }
-</style>
-
-<br><br><br>
-
-<div class="mt-10 mx-auto p-4 bg-white rounded-lg shadow-md hover:shadow-2xl">
+<div class="mx-auto p-4 bg-white rounded-lg shadow-md hover:shadow-2xl dark:bg-gray-700">
     <div class="mb-4">
         <canvas id="goalChart" class="w-full h-auto"></canvas>
     </div>
@@ -251,6 +263,7 @@
                     }]
                 },
                 options: {
+                    color: 'rgb(170 170 170)',
                     scales: {
                         y: {
                             beginAtZero: true,
@@ -258,7 +271,9 @@
                         }
                     },
                     plugins: {
+                        color: 'rgb(170 170 170)',
                         title: {
+                            color: 'rgb(170 170 170)',
                             display: true,
                             text: 'Categories of Goals',
                             'position': 'bottom',
@@ -284,13 +299,13 @@
 
 
 {% if total_notes != 0 %}
-<br><br><br>
+<br>
 <!-- Word Cloud -->
-<div class="mt-6 mb-8 mx-auto p-4 bg-white rounded-lg shadow-md hover:shadow-2xl">
+<div class="mb-8 mx-auto p-4 bg-white rounded-lg shadow-md hover:shadow-2xl dark:bg-gray-700">
     <!-- Display the word cloud image -->
     <img src="{{ wordcloud_image_path }}" alt="Word Cloud" class="w-full h-auto mb-3" />
-    <hr>
-    <p class="mt-3 text-center">Notes Word Cloud</p>
+    <hr class="bg-gray-300">
+    <p class="mt-3 text-center dark:text-gray-200">Notes Word Cloud</p>
 </div>
 
 

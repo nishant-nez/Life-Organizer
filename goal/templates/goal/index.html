@@ -8,9 +8,10 @@
 
 {% if goals|length > 0 %}
 
-<div class="container m-auto mt-8 grid grid-cols-1 gap-10 mb-6">
+<div class="container m-auto mt-8 grid grid-cols-1 gap-12 mb-6">
     {% for goal in goals %}
-    <div class="border p-2 leading-6 rounded-lg shadow-md hover:shadow-2xl">
+    <div
+        class="p-2 leading-6 rounded-lg shadow-md hover:shadow-2xl dark:text-gray-200 dark:hover:shadow-gray-800 dark:bg-slate-800">
         <div class="flex justify-between">
             <div class="mx-8 flex justify-center items-center">
                 <!-- <div class="w-36 h-36 rounded-full flex items-center justify-center {{ goal.theme_color }}"> -->
@@ -26,7 +27,8 @@
                         <div class="text-center">
                             <h2 class="font-bold text-2xl mb-2"> {{ goal.title }} </h2>
                         </div>
-                        <hr class="w-[100%] m-auto">
+                        <!-- <hr class="w-[100%] bg-gray-700"> -->
+                        <hr class="w-[90%] h-1 mx-auto my-2 bg-gray-100 border-0 rounded dark:bg-gray-600">
                         <div class="flex justify-center">
                             <div class="w-[50%] mx-6 p-2 flex justify-between pt-4">
                                 <div class="">
@@ -44,7 +46,7 @@
                                 <div class="flex mb-2 items-center justify-between">
                                     <div>
                                         <span
-                                            class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-white-600 bg-orange-200">
+                                            class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-white-600 bg-orange-200 dark:text-gray-500">
                                             Progress
                                         </span>
                                     </div>
@@ -54,9 +56,9 @@
                                         </span>
                                     </div>
                                 </div>
-                                <div class="overflow-hidden h-2 mb-4 text-xs flex rounded bg-pink-200">
+                                <div class="overflow-hidden h-2 mb-4 text-xs flex rounded bg-orange-200">
                                     <div style="width:{{ goal.progress }}%"
-                                        class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-pink-500">
+                                        class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-orange-400">
                                     </div>
                                 </div>
                             </div>
@@ -66,7 +68,8 @@
                 </div>
                 <div class="flex flex-col justify-evenly px-8">
                     <a href="/goal/{{ goal.id }}/update/">
-                        <svg xmlns="http://www.w3.org/2000/svg" height="2em" viewBox="0 0 576 512">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="2em" viewBox="0 0 576 512"
+                            style="fill: #EEEEEE;">
                             <path
                                 d="M402.6 83.2l90.2 90.2c3.8 3.8 3.8 10 0 13.8L274.4 405.6l-92.8 10.3c-12.4 1.4-22.9-9.1-21.5-21.5l10.3-92.8L388.8 83.2c3.8-3.8 10-3.8 13.8 0zm162-22.9l-48.8-48.8c-15.2-15.2-39.9-15.2-55.2 0l-35.4 35.4c-3.8 3.8-3.8 10 0 13.8l90.2 90.2c3.8 3.8 10 3.8 13.8 0l35.4-35.4c15.2-15.3 15.2-40 0-55.2zM384 346.2V448H64V128h229.8c3.2 0 6.2-1.3 8.5-3.5l40-40c7.6-7.6 2.2-20.5-8.5-20.5H48C21.5 64 0 85.5 0 112v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V306.2c0-10.7-12.9-16-20.5-8.5l-40 40c-2.2 2.3-3.5 5.3-3.5 8.5z" />
                         </svg>
