@@ -5,7 +5,7 @@
 
 
 {% block reminder %}
-<div class="flex items-center justify-center mt-auto text-xl min-h-screen">
+<!-- <div class="flex items-center justify-center mt-auto text-xl min-h-screen">
     <div class="border p-10 leading-6 mb-14 rounded-lg">
         <h2 class="font-bold text-3xl mb-2 dark:text-gray-200 text-center p-4">
             {{ object.title }}
@@ -16,6 +16,20 @@
         <br />
 
         <p class="py-6 dark:text-gray-200">{{ object.content }}</p> <br>
+    </div>
+</div> -->
+
+<div class="bg-gray-600 rounded-lg mt-12 border-t-orange-300 border-t-8">
+    <div class="p-10 text-gray-200">
+        <div class="font-bold text-4xl">
+            {{ object.title }}
+        </div>
+        <div class="py-4 font-light text-gray-400">
+            {{ object.created_at|date:"F d, Y h:i A" }}
+        </div>
+        <div class="text-xl">
+            {{ object.content }}
+        </div>
     </div>
 </div>
 {% endblock reminder %}

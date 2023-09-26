@@ -7,6 +7,7 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from django import forms
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse
+from django.shortcuts import get_object_or_404
 from django.http import HttpResponse
 
 
@@ -47,7 +48,7 @@ def home(request):
 
 class ReminderListView(LoginRequiredMixin, ListView):
     model = Reminder
-    template_name = 'reminder/index.html' # <app>/<model>_<viewtype>.html 
+    template_name = 'reminder/index.html'  # <app>/<model>_<viewtype>.html
     context_object_name = 'reminders'
     ordering = ['due_date']
 
@@ -59,21 +60,22 @@ class ReminderListView(LoginRequiredMixin, ListView):
     #     context = super().get_context_data(*kwargs)
     #     context['r_form'] = ReminderCreateForm()
     #     return context
-    
+
 
 class ReminderDetailView(LoginRequiredMixin, DetailView):
     model = Reminder
-    template_name = 'reminder/reminder_details.html' # <app>/<model>_<viewtype>.html 
+    template_name = 'reminder/reminder_details.html'  # <app>/<model>_<viewtype>.html
 
 
 class ReminderCreateView(LoginRequiredMixin, CreateView):
     model = Reminder
-    template_name = 'reminder/reminder_form.html' # <app>/<model>_<viewtype>.html 
+    template_name = 'reminder/reminder_form.html'  # <app>/<model>_<viewtype>.html
     fields = ['title', 'description', 'due_date', 'notification_mode']
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
-        form.fields['due_date'].widget = forms.TextInput(attrs={'type': 'datetime-local'})
+        form.fields['due_date'].widget = forms.TextInput(
+            attrs={'type': 'datetime-local'})
         return form
 
     def form_valid(self, form):
@@ -83,8 +85,9 @@ class ReminderCreateView(LoginRequiredMixin, CreateView):
 
 class ReminderUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Reminder
-    template_name = 'reminder/reminder_form.html' # <app>/<model>_<viewtype>.html 
-    fields = ['title', 'description', 'due_date', 'is_completed', 'notification_mode']
+    template_name = 'reminder/reminder_form.html'  # <app>/<model>_<viewtype>.html
+    fields = ['title', 'description', 'due_date',
+              'is_completed', 'notification_mode']
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
@@ -94,15 +97,17 @@ class ReminderUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
         # Format the due_date value for datetime-local input
         if form.instance.due_date:
-            formatted_due_date = form.instance.due_date.strftime('%Y-%m-%dT%H:%M')
-            form.fields['due_date'].widget = forms.TextInput(attrs={'type': 'datetime-local', 'value': formatted_due_date})
-        
+            formatted_due_date = form.instance.due_date.strftime(
+                '%Y-%m-%dT%H:%M')
+            form.fields['due_date'].widget = forms.TextInput(
+                attrs={'type': 'datetime-local', 'value': formatted_due_date})
+
         return form
 
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super().form_valid(form)
-    
+
     def test_func(self):
         reminder = self.get_object()
         if self.request.user == reminder.user:
@@ -124,3 +129,14 @@ class ReminderDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         if self.request.user == reminder.user:
             return True
         return False
+
+
+@login_required
+def mark_as_completed(request, pk):
+    reminder = get_object_or_404(Reminder, pk=pk)
+
+    if request.method == 'POST':
+        reminder.is_completed = True
+        reminder.save()
+
+    return redirect('reminder-home')

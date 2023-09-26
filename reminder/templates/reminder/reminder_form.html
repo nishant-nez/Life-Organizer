@@ -7,8 +7,26 @@
 Reminder {% endblock %}
 
 {% block reminder %}
+<style>
+    #div_id_title>label,
+    #div_id_description>label,
+    #div_id_due_date>label,
+    #div_id_is_completed>label,
+    #div_id_notification_mode>label {
+        color: rgb(229 231 235);
+    }
+
+    #div_id_title>input,
+    #div_id_description>textarea,
+    #div_id_due_date>input,
+    #div_id_is_completed>input,
+    #div_id_notification_mode>select {
+        background-color: #111827;
+        border-color: #718096;
+    }
+</style>
 <div class="container mx-auto flex justify-center items-center mt-5 mb-5 dark:text-gray-200">
-    <div class="content-section border rounded-lg p-8" style="max-width: 600px; width: 100%;">
+    <div class="content-section rounded-lg p-8 border-2 border-gray-700" style="max-width: 600px; width: 100%;">
         <form method="POST">
             {% csrf_token %}
             <fieldset class="form-group">

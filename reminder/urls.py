@@ -10,4 +10,6 @@ urlpatterns = [
     path('new/', ReminderCreateView.as_view(), name='reminder-create'),
     path('<int:pk>/update/', ReminderUpdateView.as_view(), name='reminder-update'),
     path('<int:pk>/delete/', ReminderDeleteView.as_view(), name='reminder-delete'),
+    path('<int:pk>/mark-as-completed/',
+         views.mark_as_completed, name='mark-as-completed'),
 ]

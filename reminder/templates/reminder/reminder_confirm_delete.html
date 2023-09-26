@@ -2,29 +2,36 @@
 {% block title %}Delete Reminder {% endblock %}
 
 {% block reminder %}
-<div class="container mx-auto flex justify-center items-center mt-5 mb-5">
-    <div class="content-section p-4 border" style="max-width: 600px; width: 100%;">
+<div class="container mx-auto flex justify-center items-center mt-14 mb-5">
+    <div class="content-section p-4 border border-gray-600 rounded-lg" style="max-width: 600px; width: 100%;">
         <form method="POST">
             {% csrf_token %}
             <fieldset class="form-group">
-                <legend class="border-b mb-4">Delete Reminder</legend>
-                <h2>Are you sure you want to delete the reminder "<span class="font-bold">{{ object.title }}</span>"?
+                <legend class="border-b mb-2 text-gray-200 font-bold">Delete Reminder</legend>
+                <h2 class="text-gray-200">Are you sure you want to delete the reminder "
+                    <span class="font-bold">
+                        {{ object.title }}</span>"?
                 </h2>
             </fieldset>
-            <div class="my-10 p-10 flex justify-">
+            <div class="my-6 px-10 flex justify-center items-center">
                 <button
                     class="border border-red-500 bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded mr-14"
                     type="submit">
                     Yes, Delete
                 </button>
                 <a class="border border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white font-bold py-2 px-4 rounded"
-                    href="{% url 'reminder-detail' object.id %}">
+                    href="{% url 'reminder-home' %}">
                     Cancel
                 </a>
             </div>
         </form>
     </div>
 </div>
+<!-- 
+<a class="border border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white font-bold py-2 px-4 rounded"
+href="{% url 'reminder-detail' object.id %}">
+Cancel
+</a> -->
 
 
 {% endblock reminder %}

@@ -9,14 +9,15 @@
     <div class="p-10 leading-6 rounded-lg shadow-md hover:shadow-2xl dark:bg-slate-800 dark:hover:shadow-gray-800">
         <div class="mx-8 flex justify-between">
             <div class="note-detail-link cursor-pointer dark:text-gray-200" data-url="{% url 'note-detail' note.id %}">
-                <h2 class="font-bold text-xl mb-2"> <a href="{% url 'note-detail' note.id %}">{{ note.title }}</a>
+                <h2 class="font-bold text-2xl mb-2"> <a href="{% url 'note-detail' note.id %}">{{ note.title }}</a>
                 </h2>
 
-                <div class="pr-6">
-                    <span>Last updated: <i class="italic font-light"> {{ note.last_updated|date:"F d, Y h:i A" }}
+                <div class="pr-6 text-gray-500">
+                    <span>Last updated: <i class="italic font-light">
+                            {{ note.last_updated|date:"F d, Y h:i A" }}
                         </i><br />
 
-                        <p class="py-4 text-gray-500">
+                        <p class="py-4 text-gray-200">
                             {{ note.content|slice:":300" }}{% if note.content|length > 300 %}...{% endif %}
                         </p>
                 </div>
