@@ -6,11 +6,16 @@ from django.conf import settings
 import os
 from django.core.mail import send_mail
 from django.utils import timezone
-
-import django
-django.setup()
+import pytz
 
 
+kathmandu_tz = pytz.timezone("Asia/Kathmandu")
+
+# import django
+# django.setup()
+
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Life_Organizer.settings')
 # t
 
 
@@ -18,7 +23,6 @@ django.setup()
 
 app = Celery('Life_Organizer')
 # Set the default Django settings module for the 'celery' program.
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Life_Organizer.settings')
 
 
 # Using a string here means the worker doesn't have to serialize
@@ -65,7 +69,7 @@ def check_reminder():
 
     # Truncate seconds and microseconds from both timestamps
     current_datetime = current_datetime.replace(second=0, microsecond=0)
-    one_hour_from_now = one_hour_from_now.replace(second=0, microsecond=0)
+    one_hour_later = one_hour_later.replace(second=0, microsecond=0)
 
     email_reminders = Reminder.objects.filter(
         notification_mode='email',
@@ -77,8 +81,8 @@ def check_reminder():
             user = reminder.user
             from_email = settings.EMAIL_HOST_USER
             subject = f"Reminder {reminder.title} due in 1 hour"
-            message = f"Hello {user.get_full_name()},\n\nYou have a reminder titled '{reminder.title}' due at {reminder.due_date}.\n\nRegards,\nLife Organizer"
-            recipient_list = {user.email}
+            message = f"Hello {user.get_full_name()},\n\nYou have a reminder titled '{reminder.title}' due at {reminder.due_date.astimezone(kathmandu_tz)}.\n\nRegards,\nLife Organizer"
+            recipient_list = [{user.email}, 'khadkanishant1@gmail.comqc']
 
             send_mail(subject,
                       message,
