@@ -73,7 +73,8 @@ def check_reminder():
 
     email_reminders = Reminder.objects.filter(
         notification_mode='email',
-        due_date__gte=one_hour_later
+        due_date__gte=one_hour_later,
+        sent=False
     )
 
     if email_reminders:
@@ -82,13 +83,19 @@ def check_reminder():
             from_email = settings.EMAIL_HOST_USER
             subject = f"Reminder {reminder.title} due in 1 hour"
             message = f"Hello {user.get_full_name()},\n\nYou have a reminder titled '{reminder.title}' due at {reminder.due_date.astimezone(kathmandu_tz)}.\n\nRegards,\nLife Organizer"
-            recipient_list = [{user.email}, 'khadkanishant1@gmail.comqc']
+            recipient_list = [user.email, 'nishant.khadka@deerwalk.edu.np']
 
-            send_mail(subject,
-                      message,
-                      from_email,
-                      recipient_list,
-                      fail_silently=False)
+            try:
+                send_mail(subject,
+                          message,
+                          from_email,
+                          recipient_list,
+                          fail_silently=False)
+                reminder.sent = True
+                reminder.save()
+            except Exception as e:
+                print(
+                    f"Failed to send email for reminder '{reminder.title}': {str(e)}")
     else:
         pass
 

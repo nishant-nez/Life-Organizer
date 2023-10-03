@@ -14,5 +14,6 @@ error.log
 app.log
 
 .vscode/
-
+.vscode
+vscode
 *vscode*
