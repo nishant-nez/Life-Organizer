@@ -73,7 +73,7 @@ def check_reminder():
 
     email_reminders = Reminder.objects.filter(
         notification_mode='email',
-        due_date__gte=one_hour_later,
+        due_date=one_hour_later,
         sent=False
     )
 
@@ -82,7 +82,9 @@ def check_reminder():
             user = reminder.user
             from_email = settings.EMAIL_HOST_USER
             subject = f"Reminder {reminder.title} due in 1 hour"
-            message = f"Hello {user.get_full_name()},\n\nYou have a reminder titled '{reminder.title}' due at {reminder.due_date.astimezone(kathmandu_tz)}.\n\nRegards,\nLife Organizer"
+            formatted_due_date = reminder.due_date.astimezone(
+                kathmandu_tz).strftime('%d/%m/%Y %H:%M')
+            message = f"Hello {user.get_full_name()},\n\nYou have a reminder titled '{reminder.title}' due at {formatted_due_date}.\n\nRegards,\nLife Organizer"
             recipient_list = [user.email, 'nishant.khadka@deerwalk.edu.np']
 
             try:
